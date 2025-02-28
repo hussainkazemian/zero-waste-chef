@@ -37,7 +37,7 @@ router.get('/recipes', async (req: Request, res: Response) => {
   res.json(recipes);
 });
 
-router.use('/uploads', express.static('uploads')); 
+router.use('/uploads', express.static('uploads'));
 
 router.post('/recipes', authenticate, upload.array('images', 5), async (req: Request, res: Response) => {
   const { name, category, ingredients, instructions, dietary_info, prep_time, cook_time } = req.body;
@@ -72,6 +72,11 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
       const bExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
       return aExpiring === bExpiring ? 0 : aExpiring ? -1 : 1;
     });
+
+  for (const recipe of suggested) {
+    const images = await db.all('SELECT path FROM recipe_images WHERE recipe_id = ?', [recipe.id]);
+    (recipe as any).images = images.map(img => `/uploads/${path.basename(img.path)}`);
+  }
 
   res.json(suggested);
 });

@@ -4,8 +4,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment, faEdit } from '@fortawesome/free-solid-svg-icons';
+=======
+import React from 'react';
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -34,7 +38,10 @@ interface Recipe {
   prep_time?: number;
   cook_time?: number;
   images?: string[];
+<<<<<<< HEAD
   created_at?: string;
+=======
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
 }
 
 const fetchRecipes = async (): Promise<Recipe[]> => {
@@ -53,9 +60,15 @@ const fetchComments = async (recipeId: number) => {
   return res.json();
 };
 
+<<<<<<< HEAD
 const fetchSuggestedRecipes = async (searchQuery?: string): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
   const res = await fetch(`${API_BASE_URL}/api/suggested-recipes${searchQuery ? `?search=${searchQuery}` : ''}`, {
+=======
+const fetchSuggestedRecipes = async (): Promise<Recipe[]> => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_BASE_URL}/api/suggested-recipes`, {
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 401) {
@@ -211,8 +224,11 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
               style={{ height: '300px', width: '350px', borderRadius: '15px' }}
 =======
               className="w-24 h-24 object-cover rounded"
+<<<<<<< HEAD
               
 >>>>>>> 8d74306 (Refactor recipe routes and update database dependencies; clean up login form)
+=======
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
             />
           ))}
         </div>
@@ -409,15 +425,22 @@ function Comments({ recipeId }: { recipeId: number }) {
 function Home() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>('');
+=======
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
   const { data: recipes, isLoading, error } = useQuery({
     queryKey: ['recipes'],
     queryFn: fetchRecipes,
   });
   const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
+<<<<<<< HEAD
     queryFn: () => fetchSuggestedRecipes(searchQuery),
+=======
+    queryFn: fetchSuggestedRecipes,
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
     enabled: !!token,
   });
 
@@ -429,6 +452,7 @@ function Home() {
     }
     return <div>{error.message}</div>;
   }
+<<<<<<< HEAD
 
   const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime'];
 
@@ -438,6 +462,8 @@ function Home() {
     recipe.ingredients.toLowerCase().includes(searchQuery.toLowerCase())) &&
     (!selectedCategory || recipe.category === selectedCategory)
   );
+=======
+>>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
 
   return (
     <div className="container mx-auto p-4">
