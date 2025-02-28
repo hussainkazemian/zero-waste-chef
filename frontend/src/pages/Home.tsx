@@ -96,6 +96,7 @@ function RecipeCard({ recipe }: { recipe: Recipe & { images?: string[] } }) {
               src={`${API_BASE_URL}${img}`}
               alt={recipe.name}
               className="w-24 h-24 object-cover rounded"
+              
             />
           ))}
         </div>
