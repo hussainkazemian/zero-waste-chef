@@ -87,8 +87,26 @@ function Login() {
             </form>
           </div>
         </div>
+<<<<<<< HEAD
       </div>
     </section>
+=======
+        <div>
+          <input
+            type="password"
+            {...register('password')}
+            placeholder="Password"
+            className="w-full p-2 border rounded"
+          />
+          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+        </div>
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+          Login
+        </button>
+        <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
+      </form>
+    </div>
+>>>>>>> 8d74306 (Refactor recipe routes and update database dependencies; clean up login form)
   );
 }
 

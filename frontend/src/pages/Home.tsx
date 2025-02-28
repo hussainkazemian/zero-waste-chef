@@ -206,8 +206,13 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
               key={index}
               src={`${API_BASE_URL}${img}`}
               alt={recipe.name}
+<<<<<<< HEAD
               className="object-cover rounded"
               style={{ height: '300px', width: '350px', borderRadius: '15px' }}
+=======
+              className="w-24 h-24 object-cover rounded"
+              
+>>>>>>> 8d74306 (Refactor recipe routes and update database dependencies; clean up login form)
             />
           ))}
         </div>
