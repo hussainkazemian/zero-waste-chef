@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -17,6 +19,7 @@ interface Recipe {
   dietary_info?: string;
   prep_time?: number;
   cook_time?: number;
+  images?: string[];
 }
 
 const fetchRecipes = async (): Promise<Recipe[]> => {
@@ -24,6 +27,9 @@ const fetchRecipes = async (): Promise<Recipe[]> => {
   const res = await fetch(`${API_BASE_URL}/api/recipes`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  if (res.status === 401) {
+    throw new Error('Unauthorized');
+  }
   return res.json();
 };
 
@@ -32,7 +38,18 @@ const fetchComments = async (recipeId: number) => {
   return res.json();
 };
 
-function RecipeCard({ recipe }: { recipe: Recipe & { images?: string[] } }) {
+const fetchSuggestedRecipes = async (): Promise<Recipe[]> => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_BASE_URL}/api/suggested-recipes`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (res.status === 401) {
+    throw new Error('Unauthorized');
+  }
+  return res.json();
+};
+
+function RecipeCard({ recipe }: { recipe: Recipe }) {
   const queryClient = useQueryClient();
   const token = localStorage.getItem('token');
   const { data: likeStatus } = useQuery({
@@ -96,7 +113,6 @@ function RecipeCard({ recipe }: { recipe: Recipe & { images?: string[] } }) {
               src={`${API_BASE_URL}${img}`}
               alt={recipe.name}
               className="w-24 h-24 object-cover rounded"
-              
             />
           ))}
         </div>
@@ -146,22 +162,25 @@ function Comments({ recipeId }: { recipeId: number }) {
 
 function Home() {
   const token = localStorage.getItem('token');
-  const { data: recipes, isLoading } = useQuery({
+  const navigate = useNavigate();
+  const { data: recipes, isLoading, error } = useQuery({
     queryKey: ['recipes'],
     queryFn: fetchRecipes,
   });
-  const { data: suggestedRecipes, isLoading: suggestedLoading } = useQuery({
+  const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
-    queryFn: async () => {
-      const res = await fetch(`${API_BASE_URL}/api/suggested-recipes`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return res.json();
-    },
+    queryFn: fetchSuggestedRecipes,
     enabled: !!token,
   });
 
   if (isLoading) return <div>Loading...</div>;
+  if (error) {
+    if (error.message === 'Unauthorized') {
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+    return <div>{error.message}</div>;
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -171,6 +190,8 @@ function Home() {
           <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
           {suggestedLoading ? (
             <p>Loading suggestions...</p>
+          ) : suggestedError ? (
+            <p>{suggestedError.message}</p>
           ) : (
             suggestedRecipes?.map((recipe: Recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
           )}
