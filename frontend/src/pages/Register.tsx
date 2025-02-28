@@ -159,14 +159,7 @@ function Register() {
           />
           {errors.age && <p className="text-red-500">{errors.age.message}</p>}
         </div>
-        <div>
-          <input
-            {...register('phone_number')}
-            placeholder="Phone Number (optional)"
-            className="w-full p-2 border rounded"
-          />
-          {errors.phone_number && <p className="text-red-500">{errors.phone_number.message}</p>}
-        </div>
+      
         <div>
           <input
             {...register('profession')}
