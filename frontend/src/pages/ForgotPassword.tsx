@@ -46,22 +46,30 @@ function ForgotPassword() {
 
   return (
     <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Forgot Password</h1>
+       <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Forgot password</h3>
+    
       {!resetToken ? (
         <form onSubmit={forgotForm.handleSubmit(onForgotSubmit)} className="space-y-4">
           <div>
             <input
               {...forgotForm.register('email')}
-              placeholder="Email"
+              placeholder="Enter Your Email Address"
               className="w-full p-2 border rounded"
             />
             {forgotForm.formState.errors.email && (
               <p className="text-red-500">{forgotForm.formState.errors.email.message}</p>
             )}
           </div>
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+          <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10px'
+                }}>
+          <button type="submit"  className="w-full p-2 bg-blue-500 text-white rounded">
             Send Reset Link
           </button>
+          </div>
         </form>
       ) : (
         <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-4">
@@ -76,7 +84,8 @@ function ForgotPassword() {
               <p className="text-red-500">{resetForm.formState.errors.newPassword.message}</p>
             )}
           </div>
-          <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+          <button type="submit"
+           className="w-full p-2 bg-blue-500 text-white rounded" >
             Reset Password
           </button>
         </form>

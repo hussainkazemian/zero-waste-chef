@@ -29,17 +29,19 @@ function Profile() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
+      <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Profile</h3>
       <div className="mb-4">
         <button
           onClick={() => setTab('info')}
-          className={`p-2 ${tab === 'info' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded mr-2`}
+          style={{ marginLeft: '8px', marginRight: '8px' }}
+          className={`p-2 ${tab === 'info' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded mr-2 ml-2`}
         >
-          Info
+          Your-Profile
         </button>
         <button
           onClick={() => setTab('activities')}
-          className={`p-2 ${tab === 'activities' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded`}
+          style={{ marginLeft: '8px', marginRight: '8px' }}
+          className={`p-2 ${tab === 'activities' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded ml-2 mr-2`}
         >
           Activities
         </button>

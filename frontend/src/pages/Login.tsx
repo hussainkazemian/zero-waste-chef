@@ -31,33 +31,82 @@ function Login() {
     }
   };
 
+
   return (
-    <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <input
-            {...register('usernameOrEmail')}
-            placeholder="Username or Email"
-            className="w-full p-2 border rounded"
-          />
-          {errors.usernameOrEmail && <p className="text-red-500">{errors.usernameOrEmail.message}</p>}
+    <section>
+      <div className="container mx-auto mt-8 mb-8 px-4">
+        <div className="bg-white shadow-lg rounded-lg">
+          <div className="p-6">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className="my-6">
+              <div className="mb-4">
+                <label htmlFor="usernameOrEmail" className="block text-gray-700 font-medium mb-1">
+                  Username or Email:
+                </label>
+                <input
+                  {...register('usernameOrEmail')}
+                  id="usernameOrEmail"
+                  placeholder="Enter username or email"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {errors.usernameOrEmail && (
+                  <p className="text-red-500 text-sm mt-1">{errors.usernameOrEmail.message}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="password" className="block text-gray-700 font-medium mb-1">
+                  Password:
+                </label>
+                <input
+                  {...register('password')}
+                  id="password"
+                  type="password"
+                  placeholder="Enter password"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                )}
+              </div>
+              
+              <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}> 
+                <button
+                  type="submit"
+    
+                  className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Login
+                </button>
+               
+              </div>
+              <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '1rem',
+                }}>
+                <a
+                  href="/forgot-password"
+                  
+
+                  className="text-blue-500 hover:underline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/forgot-password');
+                  }}
+                >
+                  Forgot Password?
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
-        <div>
-          <input
-            type="password"
-            {...register('password')}
-            placeholder="Password"
-            className="w-full p-2 border rounded"
-          />
-          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-        </div>
-        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
-          Login
-        </button>
-        <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
-      </form>
-    </div>
+      </div>
+    </section>
   );
 }
 

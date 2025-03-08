@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -121,6 +121,8 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         <div className="mt-2">
           <button
             onClick={() => mutation.mutate(true)}
+            style={{ marginLeft: '8px', marginRight: '18px' }}
+
             className={`p-1 ${likeStatus?.liked === true ? 'bg-green-500' : 'bg-gray-300'} text-white rounded mr-2`}
           >
             Like ({likeCounts?.likes || 0})
@@ -137,7 +139,9 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       {token && (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-2">
           <textarea {...register('text')} placeholder="Add a comment" className="w-full p-2 border rounded" />
-          <button type="submit" className="p-2 bg-blue-500 text-white rounded">Comment</button>
+          
+          <button type="submit"
+          style={{ marginLeft: '8px', marginRight: '18px' }} className="p-2 bg-blue-500 text-white rounded">Comment</button>
         </form>
       )}
     </div>

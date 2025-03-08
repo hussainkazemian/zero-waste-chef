@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import cors from 'cors'; // Import cors
+import cors from 'cors'; 
 import { initializeDatabase } from './db';
 import authRoutes from './routes/auth';
 import recipeRoutes from './routes/recipes';
