@@ -52,9 +52,15 @@ function Inventory() {
   };
 
   if (isLoading) return (
+<<<<<<< HEAD
     <section className="form-container">
       <div className="container mx-auto px-4">
         <div className="form-card">
+=======
+    <section>
+      <div className="container mx-auto mt-8 mb-8 px-4">
+        <div className="bg-white shadow-lg rounded-lg">
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
           <div className="p-6">
             <p className="text-gray-700 text-center">Loading...</p>
           </div>
@@ -64,6 +70,7 @@ function Inventory() {
   );
 
   return (
+<<<<<<< HEAD
     <section className="form-container">
       <div className="container mx-auto px-4">
         <div className="form-card">
@@ -72,12 +79,23 @@ function Inventory() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="form-group">
                 <label htmlFor="name" className="form-label">
+=======
+    <section>
+      <div className="container mx-auto mt-8 mb-8 px-4">
+        <div className="bg-white shadow-lg rounded-lg">
+          <div className="p-6">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Inventory</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className="my-6">
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-gray-700 font-medium mb-1">
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
                   Ingredient Name:
                 </label>
                 <input
                   {...register('name')}
                   id="name"
                   placeholder="Enter ingredient name"
+<<<<<<< HEAD
                   className="form-input"
                 />
                 {errors.name && (
@@ -86,12 +104,24 @@ function Inventory() {
               </div>
               <div className="form-group">
                 <label htmlFor="expiration_date" className="form-label">
+=======
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="expiration_date" className="block text-gray-700 font-medium mb-1">
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
                   Expiration Date (optional):
                 </label>
                 <input
                   {...register('expiration_date')}
                   id="expiration_date"
                   type="date"
+<<<<<<< HEAD
                   className="form-input"
                 />
                 {errors.expiration_date && (
@@ -102,13 +132,36 @@ function Inventory() {
                 <button
                   type="submit"
                   className="form-button"
+=======
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {errors.expiration_date && (
+                  <p className="text-red-500 text-sm mt-1">{errors.expiration_date.message}</p>
+                )}
+              </div>
+
+              <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <button
+                  type="submit"
+                  className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
                 >
                   Add
                 </button>
               </div>
             </form>
+<<<<<<< HEAD
             <div className="mt-6">
               <label className="form-label">Current Inventory:</label>
+=======
+
+            <div className="mt-6">
+              <label className="block text-gray-700 font-medium mb-1">Current Inventory:</label>
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
               <ul className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 space-y-1">
                 {ingredients?.length > 0 ? (
                   ingredients.map((item: any) => (

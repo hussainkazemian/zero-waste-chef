@@ -5,11 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment, faEdit } from '@fortawesome/free-solid-svg-icons';
 =======
 import React from 'react';
 >>>>>>> 5633347 (Enhance recipe suggestions by including image paths and handle unauthorized access in the Home component)
+=======
+
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -236,8 +240,14 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       {token && !isExpanded && (
         <div className="mt-2">
           <button
+<<<<<<< HEAD
             onClick={(e) => { e.stopPropagation(); likeMutation.mutate(true); }}
             style={{ marginLeft: '8px', marginRight: '18px' }}
+=======
+            onClick={() => mutation.mutate(true)}
+            style={{ marginLeft: '8px', marginRight: '18px' }}
+
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
             className={`p-1 ${likeStatus?.liked === true ? 'bg-green-500' : 'bg-gray-300'} text-white rounded mr-2`}
           >
             <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
@@ -250,6 +260,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           </button>
         </div>
       )}
+<<<<<<< HEAD
 
       {isExpanded && (
         <div onClick={(e) => e.stopPropagation()} className="p-4 bg-white rounded-lg mt-2">
@@ -401,6 +412,16 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             </form>
           )}
         </div>
+=======
+      <Comments recipeId={recipe.id} />
+      {token && (
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-2">
+          <textarea {...register('text')} placeholder="Add a comment" className="w-full p-2 border rounded" />
+          
+          <button type="submit"
+          style={{ marginLeft: '8px', marginRight: '18px' }} className="p-2 bg-blue-500 text-white rounded">Comment</button>
+        </form>
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
       )}
     </div>
   );

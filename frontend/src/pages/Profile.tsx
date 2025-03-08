@@ -28,6 +28,7 @@ function Profile() {
   if (userLoading || activitiesLoading) return <div>Loading...</div>;
 
   return (
+<<<<<<< HEAD
     <section className="form-container">
       <div className="container mx-auto px-4">
         <div className="form-card">
@@ -86,6 +87,25 @@ function Profile() {
             )}
           </div>
         </div>
+=======
+    <div className="container mx-auto p-4">
+      <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Profile</h3>
+      <div className="mb-4">
+        <button
+          onClick={() => setTab('info')}
+          style={{ marginLeft: '8px', marginRight: '8px' }}
+          className={`p-2 ${tab === 'info' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded mr-2 ml-2`}
+        >
+          Your-Profile
+        </button>
+        <button
+          onClick={() => setTab('activities')}
+          style={{ marginLeft: '8px', marginRight: '8px' }}
+          className={`p-2 ${tab === 'activities' ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded ml-2 mr-2`}
+        >
+          Activities
+        </button>
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
       </div>
     </section>
   );

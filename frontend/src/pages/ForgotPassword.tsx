@@ -45,6 +45,7 @@ function ForgotPassword() {
   };
 
   return (
+<<<<<<< HEAD
     <section className="form-container">
       <div className="container mx-auto px-4">
         <div className="form-card">
@@ -92,6 +93,54 @@ function ForgotPassword() {
         </div>
       </div>
     </section>
+=======
+    <div className="container mx-auto p-4 max-w-md">
+       <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Forgot password</h3>
+    
+      {!resetToken ? (
+        <form onSubmit={forgotForm.handleSubmit(onForgotSubmit)} className="space-y-4">
+          <div>
+            <input
+              {...forgotForm.register('email')}
+              placeholder="Enter Your Email Address"
+              className="w-full p-2 border rounded"
+            />
+            {forgotForm.formState.errors.email && (
+              <p className="text-red-500">{forgotForm.formState.errors.email.message}</p>
+            )}
+          </div>
+          <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10px'
+                }}>
+          <button type="submit"  className="w-full p-2 bg-blue-500 text-white rounded">
+            Send Reset Link
+          </button>
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-4">
+          <div>
+            <input
+              {...resetForm.register('newPassword')}
+              type="password"
+              placeholder="New Password"
+              className="w-full p-2 border rounded"
+            />
+            {resetForm.formState.errors.newPassword && (
+              <p className="text-red-500">{resetForm.formState.errors.newPassword.message}</p>
+            )}
+          </div>
+          <button type="submit"
+           className="w-full p-2 bg-blue-500 text-white rounded" >
+            Reset Password
+          </button>
+        </form>
+      )}
+    </div>
+>>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
   );
 }
 
