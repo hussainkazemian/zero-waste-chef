@@ -19,9 +19,10 @@ export async function initializeDatabase() {
       phone_number TEXT,
       profession TEXT,
       age INTEGER,
-      role TEXT DEFAULT 'user' -- Add role column
+      role TEXT DEFAULT 'user'
     )
   `);
+
   // Create Recipes table
   await db.exec(`
     CREATE TABLE IF NOT EXISTS recipes (
@@ -34,9 +35,22 @@ export async function initializeDatabase() {
       dietary_info TEXT,
       prep_time INTEGER,
       cook_time INTEGER,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id)
     )
   `);
+
+  // Migration: Add created_at column if it doesn't exist
+  const recipesTableInfo = await db.all("PRAGMA table_info(recipes)");
+  const hasCreatedAtColumn = recipesTableInfo.some((column: any) => column.name === 'created_at');
+  if (!hasCreatedAtColumn) {
+    console.log('Adding created_at column to recipes table...');
+    await db.exec('ALTER TABLE recipes ADD COLUMN created_at TEXT');
+    await db.exec(`UPDATE recipes SET created_at = CURRENT_TIMESTAMP WHERE created_at IS NULL`);
+  } else {
+    // Ensure no NULL values exist in created_at
+    await db.exec(`UPDATE recipes SET created_at = CURRENT_TIMESTAMP WHERE created_at IS NULL`);
+  }
 
   // Create Ingredients table
   await db.exec(`
@@ -61,6 +75,7 @@ export async function initializeDatabase() {
       FOREIGN KEY (recipe_id) REFERENCES recipes(id)
     )
   `);
+
   await db.exec(`
     CREATE TABLE IF NOT EXISTS likes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,6 +87,7 @@ export async function initializeDatabase() {
       FOREIGN KEY (recipe_id) REFERENCES recipes(id)
     )
   `);
+
   await db.exec(`
     CREATE TABLE IF NOT EXISTS recipe_images (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

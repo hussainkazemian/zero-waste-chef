@@ -6,7 +6,8 @@ import { initializeDatabase } from '../db';
 import { authenticate } from '../controllers/auth';
 
 const router = Router();
-const upload = multer({ dest: path.join(__dirname, 'uploads/') });
+const upload = multer({ dest: path.join(__dirname, '..', '..', 'uploads') });
+
 interface Ingredient {
   id?: number;
   user_id: number;
@@ -36,8 +37,6 @@ router.get('/recipes', async (req: Request, res: Response) => {
   res.json(recipes);
 });
 
-// router.use('/uploads', express.static('uploads'));
-
 router.post('/recipes', authenticate, upload.array('images', 5), async (req: Request, res: Response) => {
   const { name, category, ingredients, instructions, dietary_info, prep_time, cook_time } = req.body;
   const files = req.files as Express.Multer.File[];
@@ -49,12 +48,12 @@ router.post('/recipes', authenticate, upload.array('images', 5), async (req: Req
   const recipeId = result.lastID;
   if (files) {
     for (const file of files) {
-
-      await db.run('INSERT INTO recipe_images (recipe_id, path) VALUES (?, ?)', [recipeId, file.filename]);
+      await db.run('INSERT INTO recipe_images (recipe_id, path) VALUES (?, ?)', [recipeId, file.path]);
     }
   }
   res.status(201).json({ id: recipeId });
 });
+
 
 router.get('/suggested-recipes', authenticate, async (req: Request, res: Response) => {
   const db = await initializeDatabase();

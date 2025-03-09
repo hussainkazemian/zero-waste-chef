@@ -21,6 +21,7 @@ interface Recipe {
   prep_time?: number;
   cook_time?: number;
   images?: string[];
+  created_at?: string;
 }
 
 const fetchRecipes = async (): Promise<Recipe[]> => {
@@ -81,7 +82,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries(['likes', recipe.id]);
-      queryClient.invalidateQueries(['likeCounts', recipe.id]); // Refresh counts
+      queryClient.invalidateQueries(['likeCounts', recipe.id]);
     },
   });
 
@@ -102,7 +103,20 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   const onSubmit = (data: CommentForm) => commentMutation.mutate({ ...data, recipe_id: recipe.id });
 
   return (
-    <div className="card">
+    <div
+      className="card"
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+        backgroundColor: '#fff',
+        boxSizing: 'border-box',
+        margin: 'auto',
+        background: '#a3a36d',
+      }}
+    >
       <h2 className="text-xl">{recipe.name}</h2>
       <p>{recipe.category}</p>
       <p>{recipe.ingredients}</p>
@@ -111,9 +125,10 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           {recipe.images.map((img, index) => (
             <img
               key={index}
-              src={`${API_BASE_URL}/uploads/${img.split('/').pop()}`}
+              src={`${API_BASE_URL}${img}`}
               alt={recipe.name}
-              className="w-24 h-24 object-cover rounded"
+              className="object-cover rounded"
+              style={{ height: '300px', width: '350px', borderRadius: '15px' }}
             />
           ))}
         </div>
@@ -197,11 +212,37 @@ function Home() {
           ) : suggestedError ? (
             <p>{suggestedError.message}</p>
           ) : (
-            suggestedRecipes?.map((recipe: Recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '20px',
+                justifyContent: 'space-between',
+              }}
+            >
+              {suggestedRecipes?.map((recipe: Recipe) => (
+                <div key={recipe.id} style={{ flexBasis: 'calc(50% - 10px)' }}>
+                  <RecipeCard recipe={recipe} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
-      {recipes?.map((recipe: Recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        {recipes?.map((recipe: Recipe) => (
+          <div key={recipe.id} style={{ flexBasis: 'calc(50% - 10px)' }}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
