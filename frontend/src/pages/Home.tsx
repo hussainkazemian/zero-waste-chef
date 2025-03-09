@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -23,9 +24,13 @@ interface Recipe {
   images?: string[];
 }
 
-const fetchRecipes = async (): Promise<Recipe[]> => {
+const fetchRecipes = async (category: string | null = null): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
-  const res = await fetch(`${API_BASE_URL}/api/recipes`, {
+  let url = `${API_BASE_URL}/api/recipes`;
+  if (category) {
+    url += `?category=${category}`;
+  }
+  const res = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 401) {
@@ -167,15 +172,20 @@ function Comments({ recipeId }: { recipeId: number }) {
 function Home() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const { data: recipes, isLoading, error } = useQuery({
-    queryKey: ['recipes'],
-    queryFn: fetchRecipes,
+    queryKey: ['recipes', selectedCategory],
+    queryFn: () => fetchRecipes(selectedCategory),
   });
+
   const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
     queryFn: fetchSuggestedRecipes,
     enabled: !!token,
   });
+
+  const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'];
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
@@ -189,6 +199,23 @@ function Home() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Zero Waste Chef</h1>
+      <div className="mb-4 flex space-x-4">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`p-2 border rounded ${selectedCategory === cat ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            {cat}
+          </button>
+        ))}
+        <button
+          onClick={() => setSelectedCategory(null)}
+          className={`p-2 border rounded ${selectedCategory === null ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          All
+        </button>
+      </div>
       {token && (
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>

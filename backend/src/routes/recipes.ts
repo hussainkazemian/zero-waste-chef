@@ -25,17 +25,30 @@ interface Recipe {
   dietary_info?: string;
   prep_time?: number;
   cook_time?: number;
+  created_at?: string;
 }
 
 router.get('/recipes', async (req: Request, res: Response) => {
   const db = await initializeDatabase();
-  const recipes = await db.all<Recipe[]>('SELECT * FROM recipes');
+  const category = req.query.category as string | undefined;
+  let query = 'SELECT * FROM recipes';
+  const params: any[] = [];
+
+  if (category) {
+    query += ' WHERE category = ?';
+    params.push(category);
+  }
+
+  query += ' ORDER BY created_at DESC';
+
+  const recipes = await db.all<Recipe[]>(query, params);
   for (const recipe of recipes) {
     const images = await db.all('SELECT path FROM recipe_images WHERE recipe_id = ?', [recipe.id]);
     (recipe as any).images = images.map(img => `/uploads/${path.basename(img.path)}`);
   }
   res.json(recipes);
 });
+
 
 router.post('/recipes', authenticate, upload.array('images', 5), async (req: Request, res: Response) => {
   const { name, category, ingredients, instructions, dietary_info, prep_time, cook_time } = req.body;
@@ -69,7 +82,12 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
     .sort((a, b) => {
       const aExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
       const bExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
-      return aExpiring === bExpiring ? 0 : aExpiring ? -1 : 1;
+      if (aExpiring === bExpiring) {
+        const aDate = new Date(a.created_at || '').getTime(); // Handle undefined
+        const bDate = new Date(b.created_at || '').getTime(); // Handle undefined
+        return bDate - aDate; // Sort by newest first
+      }
+      return aExpiring ? -1 : 1;
     });
 
   for (const recipe of suggested) {
@@ -79,5 +97,6 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
 
   res.json(suggested);
 });
+
 
 export default router;
