@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,7 +6,6 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -22,15 +22,12 @@ interface Recipe {
   prep_time?: number;
   cook_time?: number;
   images?: string[];
+  created_at?: string;
 }
 
-const fetchRecipes = async (category: string | null = null): Promise<Recipe[]> => {
+const fetchRecipes = async (): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
-  let url = `${API_BASE_URL}/api/recipes`;
-  if (category) {
-    url += `?category=${category}`;
-  }
-  const res = await fetch(url, {
+  const res = await fetch(`${API_BASE_URL}/api/recipes`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 401) {
@@ -44,9 +41,9 @@ const fetchComments = async (recipeId: number) => {
   return res.json();
 };
 
-const fetchSuggestedRecipes = async (): Promise<Recipe[]> => {
+const fetchSuggestedRecipes = async (searchQuery?: string): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
-  const res = await fetch(`${API_BASE_URL}/api/suggested-recipes`, {
+  const res = await fetch(`${API_BASE_URL}/api/suggested-recipes${searchQuery ? `?search=${searchQuery}` : ''}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 401) {
@@ -86,7 +83,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries(['likes', recipe.id]);
-      queryClient.invalidateQueries(['likeCounts', recipe.id]); // Refresh counts
+      queryClient.invalidateQueries(['likeCounts', recipe.id]);
     },
   });
 
@@ -107,7 +104,20 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   const onSubmit = (data: CommentForm) => commentMutation.mutate({ ...data, recipe_id: recipe.id });
 
   return (
-    <div className="card">
+    <div
+      className="card"
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+        backgroundColor: '#fff',
+        boxSizing: 'border-box',
+        margin: 'auto',
+        background: '#a3a36d',
+      }}
+    >
       <h2 className="text-xl">{recipe.name}</h2>
       <p>{recipe.category}</p>
       <p>{recipe.ingredients}</p>
@@ -116,9 +126,10 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           {recipe.images.map((img, index) => (
             <img
               key={index}
-              src={`${API_BASE_URL}/uploads/${img.split('/').pop()}`}
+              src={`${API_BASE_URL}${img}`}
               alt={recipe.name}
-              className="w-24 h-24 object-cover rounded"
+              className="object-cover rounded"
+              style={{ height: '300px', width: '350px', borderRadius: '15px' }}
             />
           ))}
         </div>
@@ -172,20 +183,16 @@ function Comments({ recipeId }: { recipeId: number }) {
 function Home() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const { data: recipes, isLoading, error } = useQuery({
-    queryKey: ['recipes', selectedCategory],
-    queryFn: () => fetchRecipes(selectedCategory),
+    queryKey: ['recipes'],
+    queryFn: fetchRecipes,
   });
-
   const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
     queryFn: fetchSuggestedRecipes,
     enabled: !!token,
   });
-
-  const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'];
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
@@ -196,25 +203,16 @@ function Home() {
     return <div>{error.message}</div>;
   }
 
+  const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime'];
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Zero Waste Chef</h1>
-      <div className="mb-4 flex space-x-4">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`p-2 border rounded ${selectedCategory === cat ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          >
-            {cat}
-          </button>
+      <div className="mb-4 flex space-x-2 flex-wrap">
+        <button onClick={() => setSelectedCategory(undefined)} className="bg-gray-300 p-2 rounded">All</button>
+        {categories.map(category => (
+          <button key={category} onClick={() => setSelectedCategory(category)} className="bg-gray-300 p-2 rounded">{category}</button>
         ))}
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={`p-2 border rounded ${selectedCategory === null ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          All
-        </button>
       </div>
       {token && (
         <div className="mb-8">
@@ -224,11 +222,39 @@ function Home() {
           ) : suggestedError ? (
             <p>{suggestedError.message}</p>
           ) : (
-            suggestedRecipes?.map((recipe: Recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '20px',
+                justifyContent: 'space-between',
+              }}
+            >
+              {suggestedRecipes?.map((recipe: Recipe) => (
+                <div key={recipe.id} style={{ flexBasis: 'calc(50% - 10px)' }}>
+                  <RecipeCard recipe={recipe} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
-      {recipes?.map((recipe: Recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        {recipes
+          ?.filter(recipe => !selectedCategory || recipe.category === selectedCategory)
+          .map((recipe: Recipe) => (
+          <div key={recipe.id} style={{ flexBasis: 'calc(50% - 10px)' }}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

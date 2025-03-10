@@ -70,6 +70,7 @@ router.post('/recipes', authenticate, upload.array('images', 5), async (req: Req
 
 router.get('/suggested-recipes', authenticate, async (req: Request, res: Response) => {
   const db = await initializeDatabase();
+  const searchQuery = req.query.search as string | undefined;
   const ingredients = await db.all<Ingredient[]>('SELECT name, expiration_date FROM ingredients WHERE user_id = ?', [req.user!.id]);
   const userIngredients = ingredients.map(i => i.name.toLowerCase());
 
@@ -77,7 +78,7 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
   const suggested = allRecipes
     .filter(recipe => {
       const recipeIngredients = recipe.ingredients.toLowerCase().split(', ');
-      return recipeIngredients.some(ri => userIngredients.includes(ri));
+      return recipeIngredients.some(ri => userIngredients.includes(ri) || (searchQuery && ri.includes(searchQuery.toLowerCase())));
     })
     .sort((a, b) => {
       const aExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
