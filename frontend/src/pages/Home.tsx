@@ -184,13 +184,14 @@ function Home() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const { data: recipes, isLoading, error } = useQuery({
     queryKey: ['recipes'],
     queryFn: fetchRecipes,
   });
   const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
-    queryFn: fetchSuggestedRecipes,
+    queryFn: () => fetchSuggestedRecipes(searchQuery),
     enabled: !!token,
   });
 
@@ -205,15 +206,43 @@ function Home() {
 
   const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime'];
 
+  const filteredRecipes = recipes?.filter(recipe =>
+    (recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    recipe.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    recipe.ingredients.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (!selectedCategory || recipe.category === selectedCategory)
+  );
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Zero Waste Chef</h1>
-      <div className="mb-4 flex space-x-2 flex-wrap">
-        <button onClick={() => setSelectedCategory(undefined)} className="bg-gray-300 p-2 rounded">All</button>
-        {categories.map(category => (
-          <button key={category} onClick={() => setSelectedCategory(category)} className="bg-gray-300 p-2 rounded">{category}</button>
-        ))}
-      </div>
+      <input
+        type="text"
+        placeholder="Type an ingredient to find similar suggested recipes..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-1/2 p-2 border rounded mb-4"
+        style={{ width: '50%', padding: '10px', fontSize: '14px' }}
+      />
+          <div className="button-container">
+  <button
+    onClick={() => setSelectedCategory(undefined)}
+    className={`category-button ${selectedCategory === undefined ? 'active' : ''}`}
+  >
+    All
+  </button>
+  {categories.map(category => (
+    <button
+      key={category}
+      onClick={() => setSelectedCategory(category)}
+      className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+    >
+      {category}
+    </button>
+  ))}
+</div>
+
+
       {token && (
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
@@ -247,9 +276,7 @@ function Home() {
           justifyContent: 'space-between',
         }}
       >
-        {recipes
-          ?.filter(recipe => !selectedCategory || recipe.category === selectedCategory)
-          .map((recipe: Recipe) => (
+        {filteredRecipes?.map((recipe: Recipe) => (
           <div key={recipe.id} style={{ flexBasis: 'calc(50% - 10px)' }}>
             <RecipeCard recipe={recipe} />
           </div>
