@@ -245,7 +245,7 @@ function Home() {
 
       {token && (
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
+          {/* <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2> */}
           {suggestedLoading ? (
             <p>Loading suggestions...</p>
           ) : suggestedError ? (
