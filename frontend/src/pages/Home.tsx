@@ -215,10 +215,10 @@ function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Zero Waste Chef</h1>
+     
       <input
         type="text"
-        placeholder="Type an ingredient to find similar suggested recipes..."
+        placeholder="Type an ingredient to find similar recipe suggestions...."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-1/2 p-2 border rounded mb-4"

@@ -10,7 +10,7 @@
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
-  background-color: #f7fafc;
+  background-color: #bfc796;
   color: #2d3748;
 }
 
@@ -108,6 +108,7 @@ input[type="text"] {
   font-size: 14px; 
   margin: 0 auto; 
   margin-bottom: 30px;
+  margin-top: 50px;
   display: block; 
   border-radius: 5px; 
 }
@@ -142,3 +143,103 @@ input[type="text"] {
   color: #ffffff; 
 }
 
+/* Navigation Bar Styling */
+nav {
+  background-color: #3490dc; /* Blue background color */
+  color: white; /* White text color */
+  padding: 1rem; /* Padding for spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  border-radius: 30px;
+}
+
+/* Container for Navigation Items */
+.nav-container {
+  display: flex;
+  justify-content: space-between; /* Space items evenly */
+  align-items: center; /* Center items vertically */
+  background-color:  rgb(163, 163, 109); /* Blue background color */
+  color: white;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Styling */
+.logo {
+  font-size: 1.5rem; /* Increase font size for logo */
+  font-weight: bold; /* Bold text for logo */
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 40px; /* Adjust as needed */
+  width: 40px; /* Ensure it's equal to height */
+  border-radius: 50%; /* Makes it round */
+  object-fit: cover; /* Ensures the image fits well */
+  margin-right: 10px; /* Space between the logo and text */
+}
+
+
+.logo-text {
+  font-size: 1.5rem; /* Adjust the font size */
+  font-weight: bold;
+  color: #374151;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Navigation Links */
+nav ul {
+  display: flex;
+  list-style: none; /* Remove bullet points */
+  gap: 1rem; /* Space between links */
+
+}
+
+nav ul li {
+  margin: 0; /* Remove default margin */
+}
+
+nav ul li a {
+  color: #374151; /* White text color for links */
+  text-decoration: none; /* Remove underline */
+  font-size: 1rem; /* Adjust font size */
+  transition: color 0.3s ease; /* Smooth transition for hover effects */
+  margin-right: 50px;
+
+}
+
+nav ul li a:hover {
+  color: #e5e7eb; /* Change color on hover */
+}
+
+/* Logout Button */
+.logout-button {
+  background-color: #e74c3c; /* Red background for logout button */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  padding: 0.5rem 1rem; /* Padding for button size */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.logout-button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+.footer {
+  background-color:  rgb(163, 163, 109); /* Blue background color */
+  color: #374151;
+  text-align: center; /* Center align text */
+  padding: 1rem; /* Padding for spacing */
+  position: relative; /* Position relative to its normal position */
+  bottom: 10px; /* Stick to the bottom of the page */
+  width: 100%; /* Full width */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  opacity: 0.9; /* Slight transparency */
+  margin-top: 100px;
+  border-radius: 30px;
+
+}
