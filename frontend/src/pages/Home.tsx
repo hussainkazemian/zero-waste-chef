@@ -71,7 +71,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   const [isEditing, setIsEditing] = useState(false);
   const [previews, setPreviews] = useState<string[]>(recipe.images || []);
 
-  // Check if user is admin
   const { data: userData } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
@@ -109,12 +108,15 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         body: JSON.stringify({ recipe_id: recipe.id, is_like }),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['likes', recipe.id]);
-      queryClient.invalidateQueries(['likeCounts', recipe.id]);
+      queryClient.invalidateQueries({ queryKey: ['likes', recipe.id] });
+      queryClient.invalidateQueries({ queryKey: ['likeCounts', recipe.id] });
     },
   });
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CommentForm>({ resolver: zodResolver(commentSchema) });
+  const { register, handleSubmit, reset } = useForm<CommentForm>({
+    resolver: zodResolver(commentSchema),
+  });
+
   const commentMutation = useMutation({
     mutationFn: (data: CommentForm & { recipe_id: number }) =>
       fetch(`${API_BASE_URL}/api/comments`, {
@@ -123,7 +125,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         body: JSON.stringify(data),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', recipe.id]);
+      queryClient.invalidateQueries({ queryKey: ['comments', recipe.id] });
       reset();
     },
   });
@@ -161,10 +163,10 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     });
 
     if (res.ok) {
-      queryClient.invalidateQueries(['recipes']);
-      queryClient.invalidateQueries(['suggestedRecipes']);
+      queryClient.invalidateQueries({ queryKey: ['recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['suggestedRecipes'] });
       setIsEditing(false);
-      setIsExpanded(true); // Keep expanded after save
+      setIsExpanded(true);
     } else {
       alert('Failed to update recipe');
     }
@@ -214,20 +216,19 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       )}
       {token && !isExpanded && (
         <div className="like-dislike-container">
-        <button
-          onClick={(e) => { e.stopPropagation(); likeMutation.mutate(true); }}
-          className={`like-dislike-button like ${likeStatus?.liked === true ? 'like' : 'neutral'}`}
-        >
-          <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
-        </button>
-        <button
-          onClick={(e) => { e.stopPropagation(); likeMutation.mutate(false); }}
-          className={`like-dislike-button dislike ${likeStatus?.liked === false ? 'dislike' : 'neutral'}`}
-        >
-          <FontAwesomeIcon icon={faThumbsDown} /> Dislike ({likeCounts?.dislikes || 0})
-        </button>
-      </div>
-      
+          <button
+            onClick={(e) => { e.stopPropagation(); likeMutation.mutate(true); }}
+            className={`like-dislike-button like ${likeStatus?.liked === true ? 'like' : 'neutral'}`}
+          >
+            <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); likeMutation.mutate(false); }}
+            className={`like-dislike-button dislike ${likeStatus?.liked === false ? 'dislike' : 'neutral'}`}
+          >
+            <FontAwesomeIcon icon={faThumbsDown} /> Dislike ({likeCounts?.dislikes || 0})
+          </button>
+        </div>
       )}
 
       {isExpanded && (
@@ -253,15 +254,13 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           )}
           {isAdmin && (
             <button
-            onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
-            className="edit-button"
-          >
-            <FontAwesomeIcon icon={faEdit} /> Edit
-          </button>
-          
+              onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
+              className="edit-button"
+            >
+              <FontAwesomeIcon icon={faEdit} /> Edit
+            </button>
           )}
 
-          {/* Editable Form (Admin Only, when editing) */}
           {isAdmin && isEditing && (
             <form onSubmit={handleRecipeSubmit(onRecipeSubmit)} className="mt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -370,20 +369,18 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             </form>
           )}
 
-          {/* Comments */}
           <Comments recipeId={recipe.id} />
           {token && (
-           <form onSubmit={handleSubmit(onCommentSubmit)} className="comment-form">
-           <textarea
-             {...register('text')}
-             placeholder="Add a comment"
-             className="comment-textarea"
-           />
-           <button type="submit" className="comment-button">
-             <FontAwesomeIcon icon={faComment} /> Comment
-           </button>
-         </form>
-         
+            <form onSubmit={handleSubmit(onCommentSubmit)} className="comment-form">
+              <textarea
+                {...register('text')}
+                placeholder="Add a comment"
+                className="comment-textarea"
+              />
+              <button type="submit" className="comment-button">
+                <FontAwesomeIcon icon={faComment} /> Comment
+              </button>
+            </form>
           )}
         </div>
       )}
@@ -396,12 +393,11 @@ function Comments({ recipeId }: { recipeId: number }) {
     queryKey: ['comments', recipeId],
     queryFn: () => fetchComments(recipeId),
   });
+
   return (
     <ul className="mt-2">
       {comments?.map((comment: any) => (
-        <li key={comment.id} className="text-sm">
-          {comment.text} - {new Date(comment.created_at).toLocaleString()}
-        </li>
+        <li key={comment.id}>{comment.text}</li>
       ))}
     </ul>
   );

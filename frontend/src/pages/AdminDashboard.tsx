@@ -15,11 +15,6 @@ interface User {
   role: string;
 }
 
-interface Recipe {
-  id: number;
-  user_id: number;
-  name: string;
-}
 
 interface ActivityData {
   likes: { user_id: number; recipe_id: number; is_like: boolean }[];
@@ -81,8 +76,9 @@ const AdminDashboard: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
-      queryClient.invalidateQueries(['activities']);
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['activities'] });
+      
     },
   });
 
@@ -92,7 +88,7 @@ const AdminDashboard: React.FC = () => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       }),
-    onSuccess: () => queryClient.invalidateQueries(['activities']),
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['activities'] }),
   });
 
   if (!token || userError || userData?.role !== 'admin') {

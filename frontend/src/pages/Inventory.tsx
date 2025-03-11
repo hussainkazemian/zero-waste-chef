@@ -12,7 +12,7 @@ type IngredientForm = z.infer<typeof schema>;
 
 function Inventory() {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IngredientForm>({
+  const { register, handleSubmit, formState: { errors } } = useForm<IngredientForm>({
     resolver: zodResolver(schema),
   });
 
@@ -37,8 +37,7 @@ function Inventory() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['ingredients']);
-      reset();
+      queryClient.invalidateQueries({ queryKey: ['ingredients'] });
     },
   });
 
