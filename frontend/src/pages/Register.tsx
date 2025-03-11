@@ -80,29 +80,28 @@ function Register() {
   const isLongEnough = passwordValue.length >= 8;
 
   return (
-    <section>
-      <div className="container mx-auto mt-8 mb-8 px-4">
-        <div className="bg-white shadow-lg rounded-lg">
+    <section className="form-container">
+      <div className="container mx-auto px-4">
+        <div className="form-card">
           <div className="p-6">
-            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Register</h3>
-            <form onSubmit={handleSubmit(onSubmit)} className="my-6">
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700 font-medium mb-1">
+            <h3 className="text-3xl font-bold text-center text-gray-800 mb-6">Register</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">
                   Username:
                 </label>
                 <input
                   {...register('username')}
                   id="username"
                   placeholder="Enter username"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.username && (
-                  <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+                  <p className="form-error">{errors.username.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
                   Email:
                 </label>
                 <input
@@ -110,15 +109,14 @@ function Register() {
                   id="email"
                   type="email"
                   placeholder="Enter email"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                  <p className="form-error">{errors.email.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
                   Password:
                 </label>
                 <input
@@ -126,12 +124,12 @@ function Register() {
                   id="password"
                   type="password"
                   placeholder="Enter password"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                  <p className="form-error">{errors.password.message}</p>
                 )}
-                <div className="mt-2 text-sm">
+                <div className="mt-2 text-sm space-y-1">
                   <p className={isLongEnough ? 'text-green-500' : 'text-red-500'}>
                     At least 8 characters: {isLongEnough ? '✓' : '✗'}
                   </p>
@@ -149,9 +147,8 @@ function Register() {
                   </p>
                 </div>
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="confirmPassword" className="form-label">
                   Confirm Password:
                 </label>
                 <input
@@ -159,75 +156,70 @@ function Register() {
                   id="confirmPassword"
                   type="password"
                   placeholder="Confirm password"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+                  <p className="form-error">{errors.confirmPassword.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="name" className="form-label">
                   Name:
                 </label>
                 <input
                   {...register('name')}
                   id="name"
                   placeholder="Enter name"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                  <p className="form-error">{errors.name.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="family_name" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="family_name" className="form-label">
                   Family Name:
                 </label>
                 <input
                   {...register('family_name')}
                   id="family_name"
                   placeholder="Enter family name"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.family_name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.family_name.message}</p>
+                  <p className="form-error">{errors.family_name.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="phone_number" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="phone_number" className="form-label">
                   Phone Number (optional):
                 </label>
                 <input
                   {...register('phone_number')}
                   id="phone_number"
                   placeholder="Enter phone number"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.phone_number && (
-                  <p className="text-red-500 text-sm mt-1">{errors.phone_number.message}</p>
+                  <p className="form-error">{errors.phone_number.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="profession" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="profession" className="form-label">
                   Profession (optional):
                 </label>
                 <input
                   {...register('profession')}
                   id="profession"
                   placeholder="Enter profession"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.profession && (
-                  <p className="text-red-500 text-sm mt-1">{errors.profession.message}</p>
+                  <p className="form-error">{errors.profession.message}</p>
                 )}
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="age" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="age" className="form-label">
                   Age (optional):
                 </label>
                 <input
@@ -235,21 +227,16 @@ function Register() {
                   id="age"
                   type="number"
                   placeholder="Enter age"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.age && (
-                  <p className="text-red-500 text-sm mt-1">{errors.age.message}</p>
+                  <p className="form-error">{errors.age.message}</p>
                 )}
               </div>
-
-              <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+              <div className="text-center">
                 <button
                   type="submit"
-                  className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-button"
                 >
                   Register
                 </button>

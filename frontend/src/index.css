@@ -216,8 +216,8 @@ nav ul li a:hover {
 
 /* Logout Button */
 .logout-button {
-  background-color: #e74c3c; /* Red background for logout button */
-  color: white; /* White text color */
+  background-color:rgb(163, 163, 109);
+  color: black;
   border: none; /* Remove default border */
   padding: 0.5rem 1rem; /* Padding for button size */
   border-radius: 5px; /* Rounded corners */
@@ -226,7 +226,7 @@ nav ul li a:hover {
 }
 
 .logout-button:hover {
-  background-color: #c0392b; /* Darker red on hover */
+  background-color: #8e342b; /* Darker red on hover */
 }
 
 .footer {
@@ -242,4 +242,146 @@ nav ul li a:hover {
   margin-top: 100px;
   border-radius: 30px;
 
+}
+/* Unified Form Card */
+.form-card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.form-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Form Container */
+.form-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: #bfc796;
+}
+
+/* Form Group (for individual fields) */
+.form-group {
+  margin-bottom: 1.5rem;
+  /* justify-content: center;
+  display: flex;
+  */
+}
+
+/* Form Label */
+.form-label {
+  display: block;
+  font-size: 12px;
+  margin-top: 15px;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+
+  
+}
+
+/* Form Input (inputs, textareas, selects) */
+.form-input {
+  width: 100%;
+  padding: 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  background-color: #f7fafc;
+  font-size: 1rem; /* 16px */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: #a3a36d;
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.3);
+  outline: none;
+}
+
+/* Form Button */
+.form-button {
+  padding: 0.875rem;
+  background-color: #a3a36d;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+}
+
+.form-button:hover {
+  background-color: #8a8b5c;
+  transform: translateY(-1px);
+}
+
+.form-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.5);
+}
+
+/* Form Link (e.g., Forgot Password) */
+.form-link {
+  font-size: 1rem; /* 16px */
+  color: #a3a36d;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+  display: block;
+  text-align: center;
+}
+
+.form-link:hover {
+  color: #8a8b5c;
+  text-decoration: underline;
+}
+
+/* Form Error */
+.form-error {
+  color: #e53e3e;
+  font-size: 0.875rem; /* 14px */
+  margin-top: 0.25rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .form-card {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .form-input {
+    padding: 0.75rem;
+  }
+
+  .form-button {
+    padding: 0.75rem;
+  }
+}
+/* Tab Button Modifier */
+.form-button--tab {
+  padding: 0.5rem 1rem;
+  width: auto;
+  background-color: #a3a36d;
+  margin: 0 0.5rem;
+}
+
+.form-button--tab:hover {
+  background-color: #8a8b5c;
+}
+
+.form-button--tab.inactive {
+  background-color: #d1d5db;
+  color: #374151;
+}
+
+.form-button--tab.inactive:hover {
+  background-color: #b0b7c3;
 }

@@ -1,5 +1,6 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import bcrypt from 'bcryptjs';
 
 export async function initializeDatabase() {
   const db = await open({
@@ -22,6 +23,15 @@ export async function initializeDatabase() {
       role TEXT DEFAULT 'user'
     )
   `);
+
+  // Migration: Add role column if it doesn't exist
+  const usersTableInfo = await db.all("PRAGMA table_info(users)");
+  const hasRoleColumn = usersTableInfo.some((column: any) => column.name === 'role');
+  if (!hasRoleColumn) {
+    console.log('Adding role column to users table...');
+    await db.exec('ALTER TABLE users ADD COLUMN role TEXT DEFAULT "user"');
+    await db.exec(`UPDATE users SET role = 'user' WHERE role IS NULL`);
+  }
 
   // Create Recipes table
   await db.exec(`
@@ -99,3 +109,35 @@ export async function initializeDatabase() {
 
   return db;
 }
+
+export async function seedAdminUser() {
+  const db = await initializeDatabase();
+  // Check if admin user already exists
+  const existingAdmin = await db.get('SELECT * FROM users WHERE username = ?', ['useradmin']);
+  if (!existingAdmin) {
+    const hashedPassword = await bcrypt.hash('NewUser012@', 10);
+    await db.run(
+      `INSERT INTO users (username, email, password, name, family_name, profession, age, role)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        'useradmin',
+        'adminuser@example.com',
+        hashedPassword,
+        'admin',
+        'kazu',
+        'jobless',
+        20,
+        'admin'
+      ]
+    );
+    console.log('Admin user "useradmin" created successfully.');
+  } else {
+    console.log('Admin user "useradmin" already exists.');
+  }
+}
+
+// Call this function after initialization
+initializeDatabase().then(() => {
+  seedAdminUser().catch(console.error);
+});
+

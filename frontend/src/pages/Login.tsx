@@ -31,30 +31,29 @@ function Login() {
     }
   };
 
-
   return (
-    <section>
-      <div className="container mx-auto mt-8 mb-8 px-4">
-        <div className="bg-white shadow-lg rounded-lg">
+    <section className="form-container">
+      <div className="container mx-auto px-4">
+        <div className="form-card">
           <div className="p-6">
-            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h3>
-            <form onSubmit={handleSubmit(onSubmit)} className="my-6">
-              <div className="mb-4">
-                <label htmlFor="usernameOrEmail" className="block text-gray-700 font-medium mb-1">
+            <h3 className="text-3xl font-bold text-center text-gray-800 mb-6">Login</h3>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="form-group">
+                <label htmlFor="usernameOrEmail" className="form-label">
                   Username or Email:
                 </label>
                 <input
                   {...register('usernameOrEmail')}
                   id="usernameOrEmail"
                   placeholder="Enter username or email"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.usernameOrEmail && (
-                  <p className="text-red-500 text-sm mt-1">{errors.usernameOrEmail.message}</p>
+                  <p className="form-error">{errors.usernameOrEmail.message}</p>
                 )}
               </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700 font-medium mb-1">
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
                   Password:
                 </label>
                 <input
@@ -62,38 +61,21 @@ function Login() {
                   id="password"
                   type="password"
                   placeholder="Enter password"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="form-input"
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                  <p className="form-error">{errors.password.message}</p>
                 )}
               </div>
-              
-              <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}> 
-                <button
-                  type="submit"
-    
-                  className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
+              <div className="text-center">
+                <button type="submit" className="form-button">
                   Login
                 </button>
-               
               </div>
-              <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: '1rem',
-                }}>
+              <div className="text-center mt-4">
                 <a
                   href="/forgot-password"
-                  
-
-                  className="text-blue-500 hover:underline"
+                  className="form-link"
                   onClick={(e) => {
                     e.preventDefault();
                     navigate('/forgot-password');

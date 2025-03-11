@@ -36,4 +36,33 @@ router.get('/all-activities', authenticate, asyncHandler(async (req: Request, re
   res.json({ likes, comments, recipes });
 }));
 
+// Admin-only: Get all users
+router.get('/users', authenticate, asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const db = await initializeDatabase();
+  const user = await db.get('SELECT role FROM users WHERE id = ?', [req.user!.id]);
+  if (user.role !== 'admin') {
+    res.status(403).json({ message: 'Admin access required' });
+    return;
+  }
+  const users = await db.all('SELECT id, username, email, name, family_name, profession, age, role FROM users');
+  res.json(users);
+}));
+
+// Admin-only: Delete a user
+router.delete('/users/:id', authenticate, asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const db = await initializeDatabase();
+  const user = await db.get('SELECT role FROM users WHERE id = ?', [req.user!.id]);
+  if (user.role !== 'admin') {
+    res.status(403).json({ message: 'Admin access required' });
+    return;
+  }
+  const userId = req.params.id;
+  await db.run('DELETE FROM recipes WHERE user_id = ?', [userId]);
+  await db.run('DELETE FROM ingredients WHERE user_id = ?', [userId]);
+  await db.run('DELETE FROM comments WHERE user_id = ?', [userId]);
+  await db.run('DELETE FROM likes WHERE user_id = ?', [userId]);
+  await db.run('DELETE FROM users WHERE id = ?', [userId]);
+  res.status(204).send();
+}));
+
 export default router;

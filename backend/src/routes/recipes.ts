@@ -49,6 +49,52 @@ router.get('/recipes', async (req: Request, res: Response) => {
   res.json(recipes);
 });
 
+// Admin-only: Delete a recipe
+router.delete('/recipes/:id', authenticate, async (req: Request, res: Response): Promise<void> => {
+  const db = await initializeDatabase();
+  const user = await db.get('SELECT role FROM users WHERE id = ?', [req.user!.id]);
+  if (user.role !== 'admin') {
+    res.status(403).json({ message: 'Admin access required' });
+    return;
+  }
+
+  const recipeId = req.params.id;
+  await db.run('DELETE FROM recipe_images WHERE recipe_id = ?', [recipeId]);
+  await db.run('DELETE FROM comments WHERE recipe_id = ?', [recipeId]);
+  await db.run('DELETE FROM likes WHERE recipe_id = ?', [recipeId]);
+  await db.run('DELETE FROM recipes WHERE id = ?', [recipeId]);
+  res.status(204).send();
+});
+
+// Admin-only: Update a recipe
+router.put('/recipes/:id', authenticate, upload.array('images', 5), async (req: Request, res: Response): Promise<void> => {
+  const db = await initializeDatabase();
+  const user = await db.get('SELECT role FROM users WHERE id = ?', [req.user!.id]);
+  if (user.role !== 'admin') {
+    res.status(403).json({ message: 'Admin access required' });
+    return;
+  }
+
+  const { name, category, ingredients, instructions, dietary_info, prep_time, cook_time } = req.body;
+  const files = req.files as Express.Multer.File[];
+  const recipeId = req.params.id;
+
+  await db.run(
+    `UPDATE recipes
+     SET name = ?, category = ?, ingredients = ?, instructions = ?, dietary_info = ?, prep_time = ?, cook_time = ?
+     WHERE id = ?`,
+    [name, category, ingredients, instructions, dietary_info, prep_time, cook_time, recipeId]
+  );
+
+  if (files && files.length > 0) {
+    await db.run('DELETE FROM recipe_images WHERE recipe_id = ?', [recipeId]);
+    for (const file of files) {
+      await db.run('INSERT INTO recipe_images (recipe_id, path) VALUES (?, ?)', [recipeId, file.path]);
+    }
+  }
+
+  res.json({ message: 'Recipe updated successfully' });
+});
 
 router.post('/recipes', authenticate, upload.array('images', 5), async (req: Request, res: Response) => {
   const { name, category, ingredients, instructions, dietary_info, prep_time, cook_time } = req.body;
@@ -67,7 +113,6 @@ router.post('/recipes', authenticate, upload.array('images', 5), async (req: Req
   res.status(201).json({ id: recipeId });
 });
 
-
 router.get('/suggested-recipes', authenticate, async (req: Request, res: Response) => {
   const db = await initializeDatabase();
   const searchQuery = req.query.search as string | undefined;
@@ -84,9 +129,9 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
       const aExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
       const bExpiring = ingredients.some(i => i.expiration_date && new Date(i.expiration_date) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
       if (aExpiring === bExpiring) {
-        const aDate = new Date(a.created_at || '').getTime(); // Handle undefined
-        const bDate = new Date(b.created_at || '').getTime(); // Handle undefined
-        return bDate - aDate; // Sort by newest first
+        const aDate = new Date(a.created_at || '').getTime();
+        const bDate = new Date(b.created_at || '').getTime();
+        return bDate - aDate;
       }
       return aExpiring ? -1 : 1;
     });
@@ -99,5 +144,5 @@ router.get('/suggested-recipes', authenticate, async (req: Request, res: Respons
   res.json(suggested);
 });
 
-
 export default router;
+
