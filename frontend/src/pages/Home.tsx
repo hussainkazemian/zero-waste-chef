@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment, faEdit } from '@fortawesome/free-solid-svg-icons';
 =======
@@ -14,6 +15,10 @@ import React from 'react';
 =======
 
 >>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
+=======
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown, faComment } from '@fortawesome/free-solid-svg-icons';
+>>>>>>> 1a455aa (Update frontend environment configuration, remove unused PostCSS config, and add FontAwesome dependencies)
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -246,8 +251,11 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 =======
             onClick={() => mutation.mutate(true)}
             style={{ marginLeft: '8px', marginRight: '18px' }}
+<<<<<<< HEAD
 
 >>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
+=======
+>>>>>>> 1a455aa (Update frontend environment configuration, remove unused PostCSS config, and add FontAwesome dependencies)
             className={`p-1 ${likeStatus?.liked === true ? 'bg-green-500' : 'bg-gray-300'} text-white rounded mr-2`}
           >
             <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
@@ -417,9 +425,9 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       {token && (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-2">
           <textarea {...register('text')} placeholder="Add a comment" className="w-full p-2 border rounded" />
-          
-          <button type="submit"
-          style={{ marginLeft: '8px', marginRight: '18px' }} className="p-2 bg-blue-500 text-white rounded">Comment</button>
+          <button type="submit" style={{ marginLeft: '8px', marginRight: '18px' }} className="p-2 bg-blue-500 text-white rounded">
+            <FontAwesomeIcon icon={faComment} /> Comment
+          </button>
         </form>
 >>>>>>> f4be7b6 (Add error boundary component, update database, and configure Tailwind CSS)
       )}
