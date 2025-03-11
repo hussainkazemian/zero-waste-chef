@@ -11,6 +11,3 @@ Other relevant apps:
 - **NoWaste**: Tracks expiry dates and suggests recipes.
 - **Olio**: Connects users to share surplus food locally.
 - **Plantix**: Identifies vegetables via image upload (potential inspiration for an ingredient recognition feature).
-
-
-Sustainable Food App" or "Smart Recipe Helper.
