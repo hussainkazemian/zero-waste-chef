@@ -82,7 +82,7 @@ function Register() {
   return (
     <section className="form-container">
       <div className="container mx-auto px-4">
-        <div className="form-card">
+        <div className="form-card registration-form">
           <div className="p-6">
             <h3 className="text-3xl font-bold text-center text-gray-800 mb-6">Register</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -129,20 +129,20 @@ function Register() {
                 {errors.password && (
                   <p className="form-error">{errors.password.message}</p>
                 )}
-                <div className="mt-2 text-sm space-y-1">
-                  <p className={isLongEnough ? 'text-green-500' : 'text-red-500'}>
+                <div className="password-requirements">
+                  <p className={isLongEnough ? 'valid' : 'invalid'}>
                     At least 8 characters: {isLongEnough ? '✓' : '✗'}
                   </p>
-                  <p className={hasUppercase ? 'text-green-500' : 'text-red-500'}>
+                  <p className={hasUppercase ? 'valid' : 'invalid'}>
                     Uppercase letter: {hasUppercase ? '✓' : '✗'}
                   </p>
-                  <p className={hasLowercase ? 'text-green-500' : 'text-red-500'}>
+                  <p className={hasLowercase ? 'valid' : 'invalid'}>
                     Lowercase letter: {hasLowercase ? '✓' : '✗'}
                   </p>
-                  <p className={hasNumber ? 'text-green-500' : 'text-red-500'}>
+                  <p className={hasNumber ? 'valid' : 'invalid'}>
                     Number: {hasNumber ? '✓' : '✗'}
                   </p>
-                  <p className={hasSpecial ? 'text-green-500' : 'text-red-500'}>
+                  <p className={hasSpecial ? 'valid' : 'invalid'}>
                     Special character (!@#$%^&*): {hasSpecial ? '✓' : '✗'}
                   </p>
                 </div>
@@ -247,6 +247,7 @@ function Register() {
       </div>
     </section>
   );
+  
 }
 
 export default Register;

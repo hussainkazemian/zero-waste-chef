@@ -213,21 +213,21 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
         </div>
       )}
       {token && !isExpanded && (
-        <div className="mt-2">
-          <button
-            onClick={(e) => { e.stopPropagation(); likeMutation.mutate(true); }}
-            style={{ marginLeft: '8px', marginRight: '18px' }}
-            className={`p-1 ${likeStatus?.liked === true ? 'bg-green-500' : 'bg-gray-300'} text-white rounded mr-2`}
-          >
-            <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); likeMutation.mutate(false); }}
-            className={`p-1 ${likeStatus?.liked === false ? 'bg-red-500' : 'bg-gray-300'} text-white rounded`}
-          >
-            <FontAwesomeIcon icon={faThumbsDown} /> Dislike ({likeCounts?.dislikes || 0})
-          </button>
-        </div>
+        <div className="like-dislike-container">
+        <button
+          onClick={(e) => { e.stopPropagation(); likeMutation.mutate(true); }}
+          className={`like-dislike-button like ${likeStatus?.liked === true ? 'like' : 'neutral'}`}
+        >
+          <FontAwesomeIcon icon={faThumbsUp} /> Like ({likeCounts?.likes || 0})
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); likeMutation.mutate(false); }}
+          className={`like-dislike-button dislike ${likeStatus?.liked === false ? 'dislike' : 'neutral'}`}
+        >
+          <FontAwesomeIcon icon={faThumbsDown} /> Dislike ({likeCounts?.dislikes || 0})
+        </button>
+      </div>
+      
       )}
 
       {isExpanded && (
@@ -253,11 +253,12 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           )}
           {isAdmin && (
             <button
-              onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
-              className="mt-2 p-2 bg-blue-500 text-white rounded"
-            >
-              <FontAwesomeIcon icon={faEdit} /> Edit
-            </button>
+            onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
+            className="edit-button"
+          >
+            <FontAwesomeIcon icon={faEdit} /> Edit
+          </button>
+          
           )}
 
           {/* Editable Form (Admin Only, when editing) */}
@@ -372,12 +373,17 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           {/* Comments */}
           <Comments recipeId={recipe.id} />
           {token && (
-            <form onSubmit={handleSubmit(onCommentSubmit)} className="mt-2">
-              <textarea {...register('text')} placeholder="Add a comment" className="w-full p-2 border rounded" />
-              <button type="submit" style={{ marginLeft: '8px', marginRight: '18px' }} className="p-2 bg-blue-500 text-white rounded">
-                <FontAwesomeIcon icon={faComment} /> Comment
-              </button>
-            </form>
+           <form onSubmit={handleSubmit(onCommentSubmit)} className="comment-form">
+           <textarea
+             {...register('text')}
+             placeholder="Add a comment"
+             className="comment-textarea"
+           />
+           <button type="submit" className="comment-button">
+             <FontAwesomeIcon icon={faComment} /> Comment
+           </button>
+         </form>
+         
           )}
         </div>
       )}

@@ -66,7 +66,7 @@ function AddRecipe() {
   return (
     <section className="form-container-profile">
       <div className="container mx-auto px-4">
-        <div className="form-card">
+        <div className="form-card add-recipe-form">
           <div className="p-6">
             <h3 className="text-3xl font-bold text-center text-gray-800 mb-6">Add Recipe</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -179,7 +179,7 @@ function AddRecipe() {
                   className="form-input"
                 />
                 {previews.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="preview-images">
                     {previews.map((preview, index) => (
                       <img
                         key={index}
@@ -195,7 +195,6 @@ function AddRecipe() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  style={{ marginLeft: '18px', marginRight: '8px' }}
                   className="form-button bg-gray-500 hover:bg-gray-700 focus:ring-gray-500"
                 >
                   Reset
@@ -215,6 +214,6 @@ function AddRecipe() {
       </div>
     </section>
   );
-}
+  }
 
 export default AddRecipe;

@@ -385,3 +385,404 @@ nav ul li a:hover {
 .form-button--tab.inactive:hover {
   background-color: #b0b7c3;
 }
+
+/* General Container */
+.container {
+  margin-top: 20px;
+  display: block;
+}
+
+/* Section Styling */
+section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Table Styling */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f7fafc;
+  font-weight: bold;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.admin-table tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.admin-table tr:hover {
+  background-color: #e2e2e2;
+}
+
+/* Button Styling */
+.action-button {
+  background-color: #e73c29; /* Red background */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+.action-button:disabled {
+  background-color: #999; /* Gray background when disabled */
+  cursor: not-allowed;
+}
+
+/* Activities List Styling */
+.activities-list h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #374151;
+  margin-top: 1rem;
+}
+
+.activities-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.activities-list li {
+  background-color: #fff;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+/* Container for Like and Dislike Buttons */
+.like-dislike-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Like and Dislike Button Styling */
+.like-dislike-button {
+  padding: 4px 8px;
+  border-radius: 10px;
+  color: rgb(60, 116, 202);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.like-dislike-button.like {
+  background-color: #cee9d4; /* Green background for like */
+}
+
+.like-dislike-button.like:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.like-dislike-button.dislike {
+  background-color: #dc3545; /* Red background for dislike */
+}
+
+.like-dislike-button.dislike:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.like-dislike-button.neutral {
+  background-color: #dde7f0; /* Gray background for neutral state */
+}
+
+.like-dislike-button.neutral:hover {
+  background-color: #d7e7f4; /* Darker gray on hover */
+}
+
+/* Edit Button Styling */
+.edit-button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: rgb(60, 116, 202);
+  background-color: #dde7f0; /* Blue background for edit */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-top: 8px; /* Margin to match previous button styling */
+}
+
+.edit-button:hover {
+  background-color: #c5d4e4; /* Darker blue on hover */
+}
+
+/* Comment Form Styling */
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between elements */
+  margin-top: 10px;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.comment-textarea:focus {
+  border-color: #007bff; /* Blue border on focus */
+  outline: none;
+}
+
+/* Comment Button Styling */
+.comment-button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: rgb(60, 116, 202);
+  background-color: #dde7f0; /* Blue background for comment button */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px; /* Margin to match previous button styling */
+  height: 30px;
+  width: 90px;
+}
+
+.comment-button:hover {
+  background-color: #c1d8f0; /* Darker blue on hover */
+}
+/* Profile Section Styling */
+.profile-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #374151;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Tab Button Styling */
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #374151;
+  background-color: #e2e8f0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tab-button.active,
+.tab-button:hover {
+  background-color: #a3a36d;
+  color: white;
+}
+
+/* Content Styling */
+.content-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-section h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.content-section h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #374151;
+  margin-top: 1rem;
+}
+
+.content-section p {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+.content-section ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.content-section li {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 5px;
+}
+/* Additional Styles for Registration Form */
+.registration-form .form-group {
+  margin-bottom: 1.5rem; /* Space between form groups */
+}
+
+.registration-form .form-label {
+  font-size: 1rem; /* Adjust font size for labels */
+  color: #374151; /* Darker color for better contrast */
+}
+
+.registration-form .form-input {
+  border-color: #e2e8f0; /* Light border color */
+  background-color: #f7fafc; /* Light background color */
+  font-size: 1rem; /* Adjust font size */
+}
+
+.registration-form .form-input:focus {
+  border-color: #a3a36d; /* Highlight color on focus */
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.3); /* Subtle shadow on focus */
+}
+
+.registration-form .form-error {
+  color: #e53e3e; /* Error message color */
+  font-size: 0.875rem; /* Adjust font size */
+  margin-top: 0.25rem; /* Space above error message */
+}
+
+.registration-form .password-requirements {
+  font-size: 0.875rem; /* Adjust font size for requirements */
+  color: #6b7280; /* Muted color for requirements */
+  margin-top: 0.5rem; /* Space above requirements */
+}
+
+.registration-form .password-requirements p {
+  margin: 0.25rem 0; /* Space between requirement items */
+}
+
+.registration-form .password-requirements .valid {
+  color: #10b981; /* Green color for valid requirements */
+}
+
+.registration-form .password-requirements .invalid {
+  color: #ef4444; /* Red color for invalid requirements */
+}
+
+.registration-form .form-button {
+  background-color: #a3a36d; /* Button background color */
+  color: white; /* Button text color */
+  font-size: 1.125rem; /* Adjust font size */
+  padding: 0.875rem; /* Adjust padding */
+  border-radius: 0.375rem; /* Rounded corners */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  width: 100%; /* Full width */
+}
+
+.registration-form .form-button:hover {
+  background-color: #8a8b5c; /* Darker background on hover */
+  transform: translateY(-1px); /* Slight lift on hover */
+}
+
+.registration-form .form-button:focus {
+  outline: none; /* Remove outline on focus */
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.5); /* Subtle shadow on focus */
+}
+/* Additional Styles for Add Recipe Form */
+.add-recipe-form .form-group {
+  margin-bottom: 1.5rem; /* Space between form groups */
+}
+
+.add-recipe-form .form-label {
+  font-size: 1rem; /* Adjust font size for labels */
+  color: #374151; /* Darker color for better contrast */
+}
+
+.add-recipe-form .form-input {
+  border-color: #e2e8f0; /* Light border color */
+  background-color: #f7fafc; /* Light background color */
+  font-size: 1rem; /* Adjust font size */
+}
+
+.add-recipe-form .form-input:focus {
+  border-color: #a3a36d; /* Highlight color on focus */
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.3); /* Subtle shadow on focus */
+}
+
+.add-recipe-form .form-error {
+  color: #e53e3e; /* Error message color */
+  font-size: 0.875rem; /* Adjust font size */
+  margin-top: 0.25rem; /* Space above error message */
+}
+
+.add-recipe-form .form-button {
+  background-color: #a3a36d; /* Button background color */
+  color: white; /* Button text color */
+  font-size: 1.125rem; /* Adjust font size */
+  padding: 0.875rem; /* Adjust padding */
+  border-radius: 0.375rem; /* Rounded corners */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.add-recipe-form .form-button:hover {
+  background-color: #8a8b5c; /* Darker background on hover */
+  transform: translateY(-1px); /* Slight lift on hover */
+}
+
+.add-recipe-form .form-button:focus {
+  outline: none; /* Remove outline on focus */
+  box-shadow: 0 0 0 3px rgba(163, 163, 109, 0.5); /* Subtle shadow on focus */
+}
+
+.add-recipe-form .preview-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between images */
+  margin-top: 10px; /* Space above image previews */
+}
+
+.add-recipe-form .preview-images img {
+  width: 100px; /* Adjust image width */
+  height: 100px; /* Adjust image height */
+  object-fit: cover; /* Ensure images fit well */
+  border-radius: 8px; /* Rounded corners for images */
+}

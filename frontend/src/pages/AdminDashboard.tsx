@@ -106,32 +106,30 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-
       {/* Users Section */}
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">Users</h2>
-        <table className="w-full border-collapse">
+        <h2>Users</h2>
+        <table className="admin-table">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Username</th>
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Actions</th>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users?.map((user) => (
               <tr key={user.id}>
-                <td className="border p-2">{user.id}</td>
-                <td className="border p-2">{user.username}</td>
-                <td className="border p-2">{user.email}</td>
-                <td className="border p-2">{user.name} {user.family_name}</td>
-                <td className="border p-2">
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{user.name} {user.family_name}</td>
+                <td>
                   <button
                     onClick={() => deleteUserMutation.mutate(user.id)}
-                    className="bg-red-500 text-white p-1 rounded"
+                    className="action-button"
                     disabled={user.role === 'admin'} // Prevent deleting admin
                   >
                     Delete
@@ -142,29 +140,29 @@ const AdminDashboard: React.FC = () => {
           </tbody>
         </table>
       </section>
-
+  
       {/* Recipes Section */}
       <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">Recipes</h2>
-        <table className="w-full border-collapse">
+        <h2>Recipes</h2>
+        <table className="admin-table">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">ID</th>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">User ID</th>
-              <th className="border p-2">Actions</th>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>User ID</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {activities?.recipes.map((recipe) => (
               <tr key={recipe.id}>
-                <td className="border p-2">{recipe.id}</td>
-                <td className="border p-2">{recipe.name}</td>
-                <td className="border p-2">{recipe.user_id}</td>
-                <td className="border p-2">
+                <td>{recipe.id}</td>
+                <td>{recipe.name}</td>
+                <td>{recipe.user_id}</td>
+                <td>
                   <button
                     onClick={() => deleteRecipeMutation.mutate(recipe.id)}
-                    className="bg-red-500 text-white p-1 rounded"
+                    className="action-button"
                   >
                     Delete
                   </button>
@@ -174,29 +172,32 @@ const AdminDashboard: React.FC = () => {
           </tbody>
         </table>
       </section>
-
+  
       {/* Activities Section */}
       <section>
-        <h2 className="text-2xl font-semibold mb-2">All Activities</h2>
-        <h3 className="text-xl mb-1">Likes</h3>
-        <ul>
-          {activities?.likes.map((like, index) => (
-            <li key={index}>
-              User {like.user_id} {like.is_like ? 'liked' : 'disliked'} Recipe {like.recipe_id}
-            </li>
-          ))}
-        </ul>
-        <h3 className="text-xl mb-1 mt-2">Comments</h3>
-        <ul>
-          {activities?.comments.map((comment) => (
-            <li key={comment.created_at + comment.recipe_id}>
-              User {comment.user_id} commented on Recipe {comment.recipe_id}: "{comment.text}" ({new Date(comment.created_at).toLocaleString()})
-            </li>
-          ))}
-        </ul>
+        <h2>All Activities</h2>
+        <div className="activities-list">
+          <h3>Likes</h3>
+          <ul>
+            {activities?.likes.map((like, index) => (
+              <li key={index}>
+                User {like.user_id} {like.is_like ? 'liked' : 'disliked'} Recipe {like.recipe_id}
+              </li>
+            ))}
+          </ul>
+          <h3>Comments</h3>
+          <ul>
+            {activities?.comments.map((comment) => (
+              <li key={comment.created_at + comment.recipe_id}>
+                User {comment.user_id} commented on Recipe {comment.recipe_id}: "{comment.text}" ({new Date(comment.created_at).toLocaleString()})
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </div>
   );
+  
 };
 
 export default AdminDashboard;
