@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect, useCallback } from 'react';
 import Home from './pages/Home';
@@ -17,9 +16,9 @@ function AppContent() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [showFooter, setShowFooter] = useState(false);
-
-  // Fetch user role to conditionally show admin link
   const [userRole, setUserRole] = useState<string | null>(null);
+
+  // Fetch user role for admin link
   useEffect(() => {
     if (token) {
       fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user`, {
@@ -31,6 +30,8 @@ function AppContent() {
         })
         .then((data) => setUserRole(data.role))
         .catch(() => setUserRole(null));
+    } else {
+      setUserRole(null); // Ensure role is null when not logged in
     }
   }, [token]);
 
@@ -39,11 +40,11 @@ function AppContent() {
     navigate('/login');
   };
 
-  // Debounced scroll handler to prevent rapid toggling
+  // Debounced scroll handler for footer visibility
   const handleScroll = useCallback(() => {
     const scrollTop = window.innerHeight + window.scrollY;
     const scrollHeight = document.documentElement.scrollHeight;
-    const threshold = scrollHeight - 100; // Increased threshold for stability
+    const threshold = scrollHeight - 100;
     setShowFooter(scrollTop >= threshold);
   }, []);
 
@@ -51,7 +52,7 @@ function AppContent() {
     let timeoutId: NodeJS.Timeout;
     const debouncedScroll = () => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(handleScroll, 100); // 100ms debounce
+      timeoutId = setTimeout(handleScroll, 100);
     };
     window.addEventListener('scroll', debouncedScroll);
     return () => {
@@ -64,7 +65,7 @@ function AppContent() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <nav className="nav-container">
         <div className="logo-container">
-          <img src="/src/img/logo.jpg" alt="Logo" className="logo-image" />
+          <img src="img/logo.jpg" alt="Logo" className="logo-image" />
           <span className="logo-text">Zero-Waste-Chef</span>
         </div>
         <ul className="flex space-x-4">
@@ -94,13 +95,31 @@ function AppContent() {
       <main className="flex-grow p-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/add-recipe" element={<AddRecipe />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/login" element={token ? <Navigate to="/" replace /> : <Login />} />
+          <Route path="/register" element={token ? <Navigate to="/" replace /> : <Register />} />
+          <Route path="/forgot-password" element={token ? <Navigate to="/" replace /> : <ForgotPassword />} />
+          <Route
+            path="/add-recipe"
+            element={token ? <AddRecipe /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/inventory"
+            element={token ? <Inventory /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/profile"
+            element={token ? <Profile /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/admin"
+            element={
+              token && userRole === 'admin' ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to={token ? "/" : "/login"} replace />
+              )
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
@@ -116,7 +135,7 @@ function AppContent() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <AppContent />
       </Router>
     </QueryClientProvider>
