@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-function Profile() {
-  const token = localStorage.getItem('token');
-  const [tab, setTab] = useState<'info' | 'activities'>('info');
 
+function Profile() {
+  const token = localStorage.getItem('token'); //retrive the authentication token from local storage 
+  const [tab, setTab] = useState<'info' | 'activities'>('info'); //state to manage the active tab
+
+    // Fetch user profile data
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
@@ -15,6 +17,7 @@ function Profile() {
     },
   });
 
+    // Fetch user activities data
   const { data: activities, isLoading: activitiesLoading } = useQuery({
     queryKey: ['activities'],
     queryFn: async () => {
@@ -48,6 +51,7 @@ function Profile() {
               </button>
             </div>
             {tab === 'info' ? (
+              //display user profile information
               <div className="content-section">
                 <p><strong>Username:</strong> {user?.username}</p>
                 <p><strong>Email:</strong> {user?.email}</p>
@@ -58,6 +62,7 @@ function Profile() {
                 {user?.age && <p><strong>Age:</strong> {user?.age}</p>}
               </div>
             ) : (
+              //display user activites
               <div className="content-section">
                 <h2>Your Activities</h2>
                 <h3>Likes</h3>

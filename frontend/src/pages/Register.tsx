@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 
+//define the schema for registration form validation
 const schema = z.object({
   username: z.string().min(4, 'Username must be at least 4 characters'),
   email: z.string().email('Must be a valid email address'),
@@ -24,14 +25,18 @@ const schema = z.object({
   path: ['confirmPassword'],
 });
 
+// Infer the type of the form data from the schema
 type RegisterForm = z.infer<typeof schema>;
 
 function Register() {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Hook to navigate to other pages
+
+    // Initialize the form with validation using Zod
   const { register, handleSubmit, formState: { errors }, setError, watch } = useForm<RegisterForm>({
     resolver: zodResolver(schema),
   });
 
+    // Handle form submission
   const onSubmit = async (data: RegisterForm) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
       method: 'POST',
@@ -49,10 +54,11 @@ function Register() {
     });
     const result = await res.json();
     if (res.ok) {
-      localStorage.setItem('token', result.token);
-      navigate('/');
+      localStorage.setItem('token', result.token);  // Store the token in local storage
+      navigate('/');  // Navigate to the home page on successful registration
     } else {
-      if (result.message === 'Username or email already exists') {
+              // Check for duplicate username or email
+      if (result.message === 'Username or email already exists') { 
         const dbCheck = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/check-duplicates`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -66,7 +72,7 @@ function Register() {
           setError('email', { type: 'manual', message: 'This email is already registered' });
         }
       } else {
-        alert(result.message);
+        alert(result.message); // Alert user if there is an error
       }
     }
   };

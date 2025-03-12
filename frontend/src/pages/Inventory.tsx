@@ -3,19 +3,23 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+//define the schema for ingredient validation
 const schema = z.object({
   name: z.string().min(1, 'Required'),
   expiration_date: z.string().optional(),
 });
 
+// Infer the type of the form data from the schema
 type IngredientForm = z.infer<typeof schema>;
 
 function Inventory() {
   const queryClient = useQueryClient();
+
+    // Initialize the form with validation using Zod
   const { register, handleSubmit, formState: { errors } } = useForm<IngredientForm>({
     resolver: zodResolver(schema),
   });
-
+  // Fetch the list of ingredients from the API
   const { data: ingredients, isLoading } = useQuery({
     queryKey: ['ingredients'],
     queryFn: async () => {
@@ -27,6 +31,7 @@ function Inventory() {
     },
   });
 
+    // Mutation to add a new ingredient
   const mutation = useMutation({
     mutationFn: (data: IngredientForm) => {
       const token = localStorage.getItem('token');
@@ -41,8 +46,10 @@ function Inventory() {
     },
   });
 
+    // Handle form submission
   const onSubmit = (data: IngredientForm) => mutation.mutate(data);
 
+    // Function to check if an ingredient is expiring soon
   const checkExpiring = (date?: string) => {
     if (!date) return false;
     const expires = new Date(date);
@@ -50,6 +57,7 @@ function Inventory() {
     return expires < weekFromNow;
   };
 
+    // Display loading state while fetching data
   if (isLoading) return (
     <section className="form-container">
       <div className="container mx-auto px-4">

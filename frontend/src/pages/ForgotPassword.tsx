@@ -4,19 +4,27 @@ import * as z from 'zod';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Define the schema for the forgot password form
 const forgotSchema = z.object({ email: z.string().email('Invalid email') });
+
+// Define the schema for the reset password form
 const resetSchema = z.object({ newPassword: z.string().min(6, 'Password must be at least 6 characters') });
 
+// Infer the types of the forms from the schemas
 type ForgotForm = z.infer<typeof forgotSchema>;
 type ResetForm = z.infer<typeof resetSchema>;
 
 function ForgotPassword() {
-  const [resetToken, setResetToken] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [resetToken, setResetToken] = useState<string | null>(null); // State to manage the reset token
+  const navigate = useNavigate(); // Hook to navigate to other pages
 
+    // Initialize the forgot password form with validation
   const forgotForm = useForm<ForgotForm>({ resolver: zodResolver(forgotSchema) });
+
+    // Initialize the reset password form with validation
   const resetForm = useForm<ResetForm>({ resolver: zodResolver(resetSchema) });
 
+    // Handle forgot password form submission
   const onForgotSubmit = async (data: ForgotForm) => {
     const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
       method: 'POST',
@@ -25,12 +33,13 @@ function ForgotPassword() {
     });
     const result = await res.json();
     if (res.ok) {
-      setResetToken(result.resetToken); // Simulate email link click
+      setResetToken(result.resetToken);  // Simulate receiving a reset token via email
     } else {
-      alert(result.message);
+      alert(result.message); // Alert user if there is an error
     }
   };
 
+    // Handle reset password form submission
   const onResetSubmit = async (data: ResetForm) => {
     const res = await fetch('http://localhost:5000/api/auth/reset-password', {
       method: 'POST',
@@ -38,9 +47,9 @@ function ForgotPassword() {
       body: JSON.stringify({ token: resetToken, newPassword: data.newPassword }),
     });
     if (res.ok) {
-      navigate('/login');
+      navigate('/login'); // Navigate to login page on successful password reset
     } else {
-      alert('Failed to reset password');
+      alert('Failed to reset password');  // Alert user if there is an error
     }
   };
 
@@ -51,6 +60,7 @@ function ForgotPassword() {
           <div className="p-6">
             <h3 className="text-3xl font-bold text-center text-gray-800 mb-6">Forgot Password</h3>
             {!resetToken ? (
+                            // Render the forgot password form
               <form onSubmit={forgotForm.handleSubmit(onForgotSubmit)} className="space-y-6">
                 <div className="form-group">
                   <input
@@ -69,6 +79,7 @@ function ForgotPassword() {
                 </div>
               </form>
             ) : (
+                            // Render the reset password form
               <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-6">
                 <div className="form-group">
                   <input

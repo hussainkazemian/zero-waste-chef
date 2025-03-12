@@ -4,6 +4,8 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+
+// Define the schema for form validation using Zod
 const schema = z.object({
   name: z.string().min(1, 'Required'),
   category: z.enum(['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime']),
@@ -15,18 +17,23 @@ const schema = z.object({
   images: z.any().optional(),
 });
 
+// Infer the type of the form data from the schema
 type RecipeForm = z.infer<typeof schema>;
 
 function AddRecipe() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook to navigate to other pages
   const { register, handleSubmit, formState: { errors }, reset } = useForm<RecipeForm>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema), // Use Zod for form validation
   });
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]); // State to store image previews
 
+    // Handle form submission
   const onSubmit = async (data: RecipeForm) => {
-    const token = localStorage.getItem('token');
-    const formData = new FormData();
+    const token = localStorage.getItem('token'); // Retrieve authentication token
+
+    const formData = new FormData(); // Create a new FormData object
+
+        // Append form data to FormData object
     Object.entries(data).forEach(([key, value]) => {
       if (key === 'images' && value) {
         Array.from(value as FileList).forEach((file) => formData.append('images', file));
@@ -35,6 +42,7 @@ function AddRecipe() {
       }
     });
 
+        // Send POST request to add the recipe
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/recipes`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -42,22 +50,24 @@ function AddRecipe() {
     });
 
     if (res.ok) {
-      navigate('/');
+      navigate('/'); // Navigate to the home page on success
     } else {
-      alert('Failed to add recipe');
+      alert('Failed to add recipe');  // Alert user if the request fails
     }
   };
 
+  // Handle file input change to preview images
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const newPreviews = Array.from(files)
         .filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'))
         .map(file => URL.createObjectURL(file));
-      setPreviews(newPreviews);
+      setPreviews(newPreviews);  // Update state with new previews
     }
   };
 
+    // Reset the form and image previews
   const resetForm = () => {
     reset();
     setPreviews([]);

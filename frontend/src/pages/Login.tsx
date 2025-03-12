@@ -3,19 +3,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 
+//define the schema for login form validation
 const schema = z.object({
   usernameOrEmail: z.string().min(1, 'Required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
-
+//Infer the type of the form data from the schema
 type LoginForm = z.infer<typeof schema>;
 
 function Login() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook to navigate to other pages
+
+    // Initialize the form with validation using Zod
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
     resolver: zodResolver(schema),
   });
 
+    // Handle form submission
   const onSubmit = async (data: LoginForm) => {
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
       method: 'POST',
@@ -24,10 +28,10 @@ function Login() {
     });
     const result = await res.json();
     if (res.ok) {
-      localStorage.setItem('token', result.token);
-      navigate('/');
+      localStorage.setItem('token', result.token);  // Store the token in local storage
+      navigate('/'); // Navigate to the home page on successful login
     } else {
-      alert(result.message);
+      alert(result.message); // Alert user if there is an error
     }
   };
 
@@ -78,7 +82,7 @@ function Login() {
                   className="form-link"
                   onClick={(e) => {
                     e.preventDefault();
-                    navigate('/forgot-password');
+                    navigate('/forgot-password'); // Navigate to the forgot password page
                   }}
                 >
                   Forgot Password?

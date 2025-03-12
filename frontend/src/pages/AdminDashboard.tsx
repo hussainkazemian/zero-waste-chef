@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+// Define the structure of a User object
 interface User {
   id: number;
   username: string;
@@ -14,14 +15,13 @@ interface User {
   age?: number;
   role: string;
 }
-
-
+// Define the structure of activitiesData
 interface ActivityData {
   likes: { user_id: number; recipe_id: number; is_like: boolean }[];
   comments: { user_id: number; recipe_id: number; text: string; created_at: string }[];
   recipes: { user_id: number; id: number; name: string }[];
 }
-
+//function to fetch all users
 const fetchUsers = async (): Promise<User[]> => {
   const token = localStorage.getItem('token');
   const res = await fetch(`${API_BASE_URL}/api/users`, {
@@ -30,7 +30,7 @@ const fetchUsers = async (): Promise<User[]> => {
   if (!res.ok) throw new Error('Failed to fetch users');
   return res.json();
 };
-
+//function to fetch all activities
 const fetchActivities = async (): Promise<ActivityData> => {
   const token = localStorage.getItem('token');
   const res = await fetch(`${API_BASE_URL}/api/all-activities`, {
@@ -45,7 +45,7 @@ const AdminDashboard: React.FC = () => {
   const queryClient = useQueryClient();
   const token = localStorage.getItem('token');
 
-  // Check if user is admin
+  // Fetch the current user's data to check if they are an admin
   const { data: userData, error: userError } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
@@ -57,18 +57,21 @@ const AdminDashboard: React.FC = () => {
     },
   });
 
+    // Fetch all users if the current user is an admin
   const { data: users, isLoading: usersLoading, error: usersError } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
     enabled: !!token && userData?.role === 'admin',
   });
 
+    // Fetch all activities if the current user is an admin
   const { data: activities, isLoading: activitiesLoading, error: activitiesError } = useQuery({
     queryKey: ['activities'],
     queryFn: fetchActivities,
     enabled: !!token && userData?.role === 'admin',
   });
 
+    // Mutation to delete a user
   const deleteUserMutation = useMutation({
     mutationFn: (userId: number) =>
       fetch(`${API_BASE_URL}/api/users/${userId}`, {
@@ -82,6 +85,7 @@ const AdminDashboard: React.FC = () => {
     },
   });
 
+        // Mutation to delete a recipe
   const deleteRecipeMutation = useMutation({
     mutationFn: (recipeId: number) =>
       fetch(`${API_BASE_URL}/api/recipes/${recipeId}`, {
@@ -91,13 +95,19 @@ const AdminDashboard: React.FC = () => {
       onSuccess: () => queryClient.invalidateQueries({ queryKey: ['activities'] }),
   });
 
+    // Redirect to login if not an admin
   if (!token || userError || userData?.role !== 'admin') {
     navigate('/login');
     return null;
   }
 
+    // Display loading state while fetching data
   if (usersLoading || activitiesLoading) return <div>Loading...</div>;
+
+    // Display error if fetching users fails
   if (usersError) return <div>Error: {(usersError as Error).message}</div>;
+
+    // Display error if fetching activities fails
   if (activitiesError) return <div>Error: {(activitiesError as Error).message}</div>;
 
   return (

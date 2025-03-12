@@ -9,9 +9,11 @@ import { faThumbsUp, faThumbsDown, faComment, faEdit } from '@fortawesome/free-s
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+//define the schema foe comment validation
 const commentSchema = z.object({ text: z.string().min(1, 'Required') });
 type CommentForm = z.infer<typeof commentSchema>;
 
+//define the shcema for recipe validation
 const recipeSchema = z.object({
   name: z.string().min(1, 'Required'),
   category: z.enum(['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime']),
@@ -24,6 +26,7 @@ const recipeSchema = z.object({
 });
 type RecipeForm = z.infer<typeof recipeSchema>;
 
+//define the structure of a recipe object
 interface Recipe {
   id: number;
   name: string;
@@ -37,6 +40,7 @@ interface Recipe {
   created_at?: string;
 }
 
+//function to fetch recipes from the API
 const fetchRecipes = async (): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
   const res = await fetch(`${API_BASE_URL}/api/recipes`, {
@@ -48,11 +52,13 @@ const fetchRecipes = async (): Promise<Recipe[]> => {
   return res.json();
 };
 
+//function to fetch comment for a sepcific recipe
 const fetchComments = async (recipeId: number) => {
   const res = await fetch(`${API_BASE_URL}/api/comments/${recipeId}`);
   return res.json();
 };
 
+//function to fetch suggeted recipe based on search querry
 const fetchSuggestedRecipes = async (searchQuery?: string): Promise<Recipe[]> => {
   const token = localStorage.getItem('token');
   const res = await fetch(`${API_BASE_URL}/api/suggested-recipes${searchQuery ? `?search=${searchQuery}` : ''}`, {
@@ -64,6 +70,7 @@ const fetchSuggestedRecipes = async (searchQuery?: string): Promise<Recipe[]> =>
   return res.json();
 };
 
+//component to display a single recipe card
 function RecipeCard({ recipe }: { recipe: Recipe }) {
   const queryClient = useQueryClient();
   const token = localStorage.getItem('token');
@@ -71,6 +78,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   const [isEditing, setIsEditing] = useState(false);
   const [previews, setPreviews] = useState<string[]>(recipe.images || []);
 
+  //fetch user data to check if the user is an admin
   const { data: userData } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
@@ -81,6 +89,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   });
   const isAdmin = userData?.role === 'admin';
 
+  //feetch like status for the recipe
   const { data: likeStatus } = useQuery({
     queryKey: ['likes', recipe.id],
     queryFn: async () => {
@@ -92,6 +101,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     enabled: !!token,
   });
 
+  //fetch like counts for the recipe
   const { data: likeCounts } = useQuery({
     queryKey: ['likeCounts', recipe.id],
     queryFn: async () => {
@@ -100,6 +110,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     },
   });
 
+  //mutation to handle liking or disliking a recipe
   const likeMutation = useMutation({
     mutationFn: (is_like: boolean) =>
       fetch(`${API_BASE_URL}/api/likes`, {
@@ -113,9 +124,12 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     },
   });
 
+  //form setup for adding comments
   const { register, handleSubmit, reset } = useForm<CommentForm>({
     resolver: zodResolver(commentSchema),
   });
+
+  //mutation to handle adding a commment
 
   const commentMutation = useMutation({
     mutationFn: (data: CommentForm & { recipe_id: number }) =>
@@ -130,6 +144,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     },
   });
 
+  //form setup for editing a recipe
   const { register: registerRecipe, handleSubmit: handleRecipeSubmit, formState: { errors: recipeErrors }, reset: resetRecipe } = useForm<RecipeForm>({
     resolver: zodResolver(recipeSchema),
     defaultValues: {
@@ -143,8 +158,10 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     },
   });
 
+  //handle comment submission
   const onCommentSubmit = (data: CommentForm) => commentMutation.mutate({ ...data, recipe_id: recipe.id });
 
+  //handle recipe submission for editing
   const onRecipeSubmit = async (data: RecipeForm) => {
     if (!isAdmin) return;
     const formData = new FormData();
@@ -171,7 +188,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
       alert('Failed to update recipe');
     }
   };
-
+ //handle file input hange for image preview
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -388,6 +405,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   );
 }
 
+//comment to display comments for a recipe
 function Comments({ recipeId }: { recipeId: number }) {
   const { data: comments } = useQuery({
     queryKey: ['comments', recipeId],
@@ -403,21 +421,27 @@ function Comments({ recipeId }: { recipeId: number }) {
   );
 }
 
+//main home component
 function Home() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  //fetch recipes from the API
   const { data: recipes, isLoading, error } = useQuery({
     queryKey: ['recipes'],
     queryFn: fetchRecipes,
   });
+
+  //fetch suggested recipes based on search query
   const { data: suggestedRecipes, isLoading: suggestedLoading, error: suggestedError } = useQuery({
     queryKey: ['suggestedRecipes'],
     queryFn: () => fetchSuggestedRecipes(searchQuery),
     enabled: !!token,
   });
 
+  //handle loading and error status
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     if (error.message === 'Unauthorized') {
@@ -429,6 +453,7 @@ function Home() {
 
   const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Anytime'];
 
+  //filter recipes based on search query and selected category
   const filteredRecipes = recipes?.filter(recipe =>
     (recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     recipe.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
