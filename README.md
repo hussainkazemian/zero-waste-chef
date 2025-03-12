@@ -15,32 +15,29 @@ Zero Waste Chef is a web application designed to help users minimize food waste 
    - Users can create accounts and log in to access personalized features.
    - Secure password handling with hashing and JWT for authentication.
 
-2. **Recipe Management**:
+2. **Recipe Management by Admin**:
    - Add, edit, and delete recipes with detailed descriptions, ingredients, and instructions.
-   - Attach up to 5 images per recipe.
    - Only the recipe creator can modify or delete their recipes.
 
 3. **Commenting and Liking**:
-   - Users can comment on recipes, including text, images, video links, and emojis.
+   - Users can comment on recipes, including text and video links.
    - Like or dislike recipes and comments.
-   - Mention other users in comments using `@username`.
 
 4. **Profile and Activities**:
    - View and manage personal information and activities.
    - Track likes, comments, and recipes added.
 
 5. **Password Recovery**:
-   - Users can recover their passwords via email with a secure link to reset their password.
+   - Users can recover their passwords via email with a secure link to reset their password. 
 
 6. **Admin Capabilities**:
    - Admin users have full control over the app, including modifying, removing, and managing all user data and recipes.
 
 7. **Home Page**:
-   - Displays recipe details, including title, description, portion size, type, allergies, and the creator's information.
+   - Displays recipe details, including title, description,  type, allergies (if mentioned), and the recipes's information.
 
 8. **Notifications**:
    - Comments display timestamps.
-   - Users are notified of mentions in comments.
 
 ## Technology Stack
 
@@ -48,8 +45,7 @@ Zero Waste Chef is a web application designed to help users minimize food waste 
   - **React**: For building the user interface with components.
   - **TypeScript**: For type safety and better code maintainability.
   - **Vite**: As the build tool for a faster and leaner development experience.
-  - **Tailwind CSS**: For styling the application with utility-first CSS.
-  - **React Query (TanStack Query)**: For data fetching and caching.
+  - **Tailwind CSS**: For styling the application with utility-first CSS. (Not completely)
   - **React Hook Form**: For form handling and validation.
   - **Zustand**: For state management.
 
