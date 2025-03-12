@@ -52,7 +52,7 @@ app.use('/api', userRoutes);
 async function startServer() {
   const db = await initializeDatabase();
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on https://localhost:${PORT}`);
   });
 }
 
