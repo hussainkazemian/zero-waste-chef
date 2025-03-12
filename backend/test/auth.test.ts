@@ -5,14 +5,16 @@ import authRoutes from '../src/routes/auth';
 
 const app = express();
 
+// Ensure DB is initialized before tests
 beforeAll(async () => {
-  await initializeDatabase(); // Ensure DB is initialized before tests
+  await initializeDatabase();
 });
 
-app.use(express.json());
-app.use('/api/auth', authRoutes);
+app.use(express.json());  // Middleware to parse JSON request bodies
+app.use('/api/auth', authRoutes); // Use the authentication routes for testing
 
 describe('Auth API', () => {
+    // Test case for user registration
   it('POST /api/auth/register - success', async () => {
     const res = await request(app)
       .post('/api/auth/register')
@@ -23,15 +25,16 @@ describe('Auth API', () => {
         name: 'Test',
         family_name: 'User',
       });
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty('token');
+    expect(res.status).toBe(201); // Expect a 201 Created status
+    expect(res.body).toHaveProperty('token'); // Expect the response to contain a token
   });
 
+    // Test case for user login
   it('POST /api/auth/login - success', async () => {
     const res = await request(app)
       .post('/api/auth/login')
       .send({ usernameOrEmail: 'testuser', password: 'password123' });
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('token');
+    expect(res.status).toBe(200); // Expect a 200 OK status
+    expect(res.body).toHaveProperty('token'); // Expect the response to contain a token
   });
 });

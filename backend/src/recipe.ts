@@ -1,8 +1,10 @@
 import { initializeDatabase } from './db';
 
+// Function to seed the database with default recipes
 async function seedDatabase() {
-  const db = await initializeDatabase();
+  const db = await initializeDatabase(); // Initialize the database connection
 
+  // Array of default recipes to be inserted into the database
   const defaultRecipes = [
     {
       user_id: 1,
@@ -105,6 +107,7 @@ async function seedDatabase() {
     },
   ];
 
+    // Insert each default recipe into the database
   for (const recipe of defaultRecipes) {
     await db.run(
       'INSERT OR IGNORE INTO recipes (user_id, name, category, ingredients, instructions, dietary_info, prep_time, cook_time, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -115,4 +118,5 @@ async function seedDatabase() {
   console.log('Database seeded with default recipes');
 }
 
+// Call the seed function to populate the database with default recipes
 seedDatabase().catch(console.error);

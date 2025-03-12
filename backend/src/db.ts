@@ -2,10 +2,12 @@ import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import bcrypt from 'bcryptjs';
 
+// Function to initialize the database and create necessary tables
+
 export async function initializeDatabase() {
   const db = await open({
-    filename: './zero_waste_chef.db',
-    driver: sqlite3.Database,
+    filename: './zero_waste_chef.db', //databse file
+    driver: sqlite3.Database, //SQLite driver
   });
 
   // Create Users table
@@ -85,6 +87,7 @@ export async function initializeDatabase() {
       FOREIGN KEY (recipe_id) REFERENCES recipes(id)
     )
   `);
+  // Create likes table
 
   await db.exec(`
     CREATE TABLE IF NOT EXISTS likes (
@@ -97,6 +100,7 @@ export async function initializeDatabase() {
       FOREIGN KEY (recipe_id) REFERENCES recipes(id)
     )
   `);
+  // Create recipe_image table
 
   await db.exec(`
     CREATE TABLE IF NOT EXISTS recipe_images (
@@ -110,12 +114,14 @@ export async function initializeDatabase() {
   return db;
 }
 
+// Function to seed an admin user into the database
 export async function seedAdminUser() {
   const db = await initializeDatabase();
+
   // Check if admin user already exists
   const existingAdmin = await db.get('SELECT * FROM users WHERE username = ?', ['useradmin']);
   if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash('NewUser012@', 10);
+    const hashedPassword = await bcrypt.hash('NewUser012@', 10); // Hash the admin password
     await db.run(
       `INSERT INTO users (username, email, password, name, family_name, profession, age, role)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,

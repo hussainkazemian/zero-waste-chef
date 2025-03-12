@@ -10,10 +10,13 @@ import userRoutes from './routes/user';
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config();
+dotenv.config(); //load environment vsrisbles from .env file
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // Default to port 5000 if not specified in environment variables
+
+
+// Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) {
@@ -24,9 +27,9 @@ app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads'), {
   },
 }));
 
-app.use(cors());
+app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS) for all routes
 
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON bodies
 
 // Error handling middleware
 interface CustomError extends Error {
@@ -39,7 +42,7 @@ app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-
+// Use the defined routes for different functionalities
 app.use('/api/auth', authRoutes);
 app.use('/api', recipeRoutes);
 app.use('/api', ingredientsRoutes);
@@ -48,14 +51,14 @@ app.use('/api', likesRoutes);
 app.use('/api', userRoutes);
 
 
-// Start server
+// Start the server
 async function startServer() {
-  const db = await initializeDatabase();
+  const db = await initializeDatabase(); //initialize the DB
   app.listen(PORT, () => {
-    console.log(`Server running on https://localhost:${PORT}`);
+    console.log(`Server running on https://localhost:${PORT}`); // Log the server start message
   });
 }
-
+ // Call the function to start the server
 startServer();
 // import express, { Request, Response, NextFunction } from 'express';
 // import cors from 'cors';  // Importing CORS
