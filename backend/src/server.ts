@@ -76,7 +76,7 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 app.use(cors({
-  origin: 'https://users.metropolia.fi/~hussaink/zero_waste_chef',  // Allow your frontend domain
+  origin: 'https://users.metropolia.fi',  // Allow your frontend domain
   credentials: true,  // If you need cookies or authentication headers, you can keep this
 }));
 
