@@ -108,3 +108,6 @@ middleware/: Custom middleware for error handling and authentication.
 App.tsx: Main application component.
 pages/: Different pages of the application, such as Home, Login, Register, etc.
 components/: Reusable components used across the application.
+
+## Database Diagram by dbdiagram.oi
+![Database-diagram](document/zero_waste_chef%20(1).png)
