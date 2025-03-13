@@ -75,8 +75,9 @@ Zero Waste Chef is a web application designed to help users minimize food waste 
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
-   cd zero-waste-chef
+   git clone <https://github.com/hussainkazemian/zero-waste-chef/tree/deploy>
+   cd zero-waste-chef 
+   git branch deploy
 
  ### Install Dependencies:
  npm install
@@ -109,13 +110,6 @@ App.tsx: Main application component.
 pages/: Different pages of the application, such as Home, Login, Register, etc.
 components/: Reusable components used across the application.
 
-### Setup
-
-1. **Clone the Repository**:
-   ```bash
-   git clone <https://github.com/hussainkazemian/zero-waste-chef/tree/deploy>
-   cd zero-waste-chef 
-   git branch deploy
 
 Open [zero_waste_chef](https://users.metropolia.fi/~hussaink/zero_waste_chef/) to view it in the browser.
 
