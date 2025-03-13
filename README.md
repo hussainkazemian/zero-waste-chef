@@ -109,5 +109,8 @@ App.tsx: Main application component.
 pages/: Different pages of the application, such as Home, Login, Register, etc.
 components/: Reusable components used across the application.
 
+Open [zero_waste_chef](https://users.metropolia.fi/~hussaink/zero_waste_chef/) to view it in the browser.
+
+
 ## Database Diagram by dbdiagram.oi
 ![Database-diagram](document/zero_waste_chef%20(1).png)
