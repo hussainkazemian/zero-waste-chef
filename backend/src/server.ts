@@ -58,8 +58,10 @@ async function startServer() {
     console.log(`Server running on https://localhost:${PORT}`); // Log the server start message
   });
 }
- // Call the function to start the server
+
 startServer();
+
+ // Call the function to start the server
 // import express, { Request, Response, NextFunction } from 'express';
 // import cors from 'cors';  // Importing CORS
 // import { initializeDatabase } from './db';
