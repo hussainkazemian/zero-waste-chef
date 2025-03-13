@@ -123,7 +123,7 @@ The API documentation for the Zero Waste Chef backend is [not} available [here](
 
 To view the documentation locally during development:
 - Navigate to `backend/apidoc/index.html` and open it in a browser, or
-- Serve it via the backend at `https://localhost:5000/backend/apidoc` after running `npm start`.
+- Serve it via the backend at `https://github.com/hussainkazemian/zero-waste-chef/blob/apidoc/backend/apidoc/index.html` after running `npm start`.
 
 ## API Screenshots
 ![user-uplicate-checking](document/checckuseruplicat.png)
