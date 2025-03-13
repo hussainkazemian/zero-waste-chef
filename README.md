@@ -116,3 +116,22 @@ Open [zero_waste_chef](https://users.metropolia.fi/~hussaink/zero_waste_chef/) t
 
 ## Database Diagram by dbdiagram.oi
 ![Database-diagram](document/zero_waste_chef%20(1).png)
+
+## API Documentation
+
+The API documentation for the Zero Waste Chef backend is [not} available [here](https://users.metropolia.fi/~hussaink/zero_waste_chef/apidoc/). This documentation provides detailed information about all available endpoints, including parameters, responses, and examples.
+
+To view the documentation locally during development:
+- Navigate to `backend/apidoc/index.html` and open it in a browser, or
+- Serve it via the backend at `https://localhost:5000/backend/apidoc` after running `npm start`.
+
+## API Screenshots
+![user-uplicate-checking](document/checckuseruplicat.png)
+![user-register](document/register.png)
+![user-created-thorugh-Postman](document/user-created.png)
+![user-created](document/login.png)
+
+
+
+
+

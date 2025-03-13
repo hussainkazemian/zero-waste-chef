@@ -1,20 +1,21 @@
 {
-    "name": "Zero Waste Chef API",
-    "version": "1.0.0",
-    "description": "API documentation for the Zero Waste Chef application, a platform for sustainable cooking and reducing food waste.",
-    "title": "Zero Waste Chef API Documentation",
-    "url": "http://localhost:5000/api",
-    "sampleUrl": "http://localhost:5000/api",
-    "header": {
-      "title": "Introduction",
-      "filename": "header.md"
-    },
-    "footer": {
-      "title": "Footer",
-      "filename": "footer.md"
-    },
-    "template": {
-      "withCompare": true,
-      "withGenerator": true
-    }
+  "name": "Zero Waste Chef API",
+  "version": "1.0.0",
+  "description": "API documentation for the Zero Waste Chef application, a platform for sustainable cooking and reducing food waste.",
+  "title": "Zero Waste Chef API Documentation",
+  "url": "http://localhost:5000/api",
+  "sampleUrl": "http://localhost:5000/api",
+  "header": {
+    "title": "Introduction",
+    "filename": "header.md"
+  },
+  "footer": {
+    "title": "Footer",
+    "filename": "footer.md"
+  },
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
   }
+}
+

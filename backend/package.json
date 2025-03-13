@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "start": "nodemon src/server.ts",
     "test": "jest",
-    "type": "module"
+    "type": "module",
+    "apidoc": "apidoc -i src/routes/ -o apidoc/"
   },
   "keywords": [],
   "author": "",
